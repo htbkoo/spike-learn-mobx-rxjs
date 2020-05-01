@@ -105,15 +105,19 @@ function TodoListApp() {
         );
     }
 
-    function TodoItem({text, isDone}: TodoItem & { id: TodoItemId }) {
+    function TodoItem({text, isDone, id}: TodoItem) {
         return (
             <div className={classes.todoItemContainer}>
                 <Checkbox
                     checked={isDone}
-                    // onChange={handleChange}
-                    inputProps={{'aria-label': 'primary checkbox'}}
+                    onChange={() =>
+                        setTodoAppState(produce(todoAppState, nextState => {
+                            nextState[id].isDone = !nextState[id].isDone
+                        }))
+                    }
                 />
-                <TextField label="Todo item" variant="outlined" className={classes.flexOne} value={text}/>
+                <TextField label="Todo item" variant="outlined" className={classes.flexOne} value={text}
+                           disabled={isDone}/>
                 <IconButton color="primary" aria-label="remove todo item" component="span">
                     <RemoveCircle/>
                 </IconButton>
