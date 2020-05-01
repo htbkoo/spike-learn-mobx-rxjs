@@ -8,6 +8,8 @@ import IconButton from "@material-ui/core/IconButton";
 import {AddCircle, RemoveCircle} from "@material-ui/icons";
 import Checkbox from "@material-ui/core/Checkbox";
 import produce from "immer"
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -144,8 +146,9 @@ function TodoListApp() {
     }
 
     function AddTodoItem() {
-        const EMPTY_TEXT_WIP = "";
+        const EMPTY_TEXT_WIP = "", NO_ERROR = "";
         const [todoTextWIP, setTodoTextWIP] = useState(EMPTY_TEXT_WIP);
+        const [errorMessage, setErrorMessage] = useState(NO_ERROR);
 
         return (
             <div className={classes.todoItemContainer}>
@@ -154,6 +157,13 @@ function TodoListApp() {
                 <IconButton color="primary" aria-label="add todo item" component="span" onClick={handleAddTodoItem}>
                     <AddCircle/>
                 </IconButton>
+                {errorMessage ? (
+                    <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseErrorSnackbar}>
+                        <Alert elevation={6} variant="filled" onClose={handleCloseErrorSnackbar} severity="error">
+                            {errorMessage}
+                        </Alert>
+                    </Snackbar>
+                ) : ""}
             </div>
         )
 
@@ -170,7 +180,13 @@ function TodoListApp() {
                 });
                 setTodoAppState(nextState);
                 setTodoTextWIP(EMPTY_TEXT_WIP);
+            } else {
+                setErrorMessage("To do item cannot be empty!")
             }
+        }
+
+        function handleCloseErrorSnackbar() {
+            setErrorMessage(NO_ERROR);
         }
     }
 }
