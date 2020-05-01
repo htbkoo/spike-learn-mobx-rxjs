@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import TextField from '@material-ui/core/TextField';
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import {AddCircle} from "@material-ui/icons";
+import {AddCircle, RemoveCircle} from "@material-ui/icons";
+import Checkbox from "@material-ui/core/Checkbox";
+import produce from "immer"
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -55,37 +57,91 @@ const App: React.FC = () => {
     );
 };
 
+interface TodoItem {
+    id: number,
+    text: string,
+    isDone: boolean,
+}
+
+type TodoListAppState = { [id: number]: TodoItem, ids: number[] };
+
+let lastId = 0;
+
 function TodoListApp() {
     const classes = useStyles();
+    const [todoAppState, setTodoAppState] = useState<TodoListAppState>({ids: []});
+
+    console.log(`render TodoListApp`)
 
     return (
         <Paper className={classes.todoListApp}>
             <Typography variant="h3">Simple To Do List</Typography>
-            <form className={classes.todoItemsContainer} noValidate autoComplete="off">
-                <TodoItem/>
-                <TodoItem/>
-                <TodoItem/>
-                <TodoItem/>
-                <TodoItem/>
-                <TodoItem/>
-                <TodoItem/>
-                <TodoItem/>
-                <TodoItem/>
-                <TodoItem/>
-                <TodoItem/>
+            <form className={classes.todoItemsContainer} noValidate autoComplete="off"
+                  onSubmit={event => event.preventDefault()}>
+                <TodoItems/>
+                <AddTodoItem/>
             </form>
         </Paper>
     )
 
-    function TodoItem() {
+    function TodoItems() {
+        return (
+            <>
+                {
+                    todoAppState.ids.map(id => (
+                        <TodoItem {...todoAppState[id]} key={id}/>
+                    ))
+                }
+            </>
+        );
+    }
+
+    function TodoItem({text, isDone}: TodoItem & { id: number }) {
         return (
             <div className={classes.todoItemContainer}>
-                <TextField label="Todo item" variant="outlined" className={classes.flexOne}/>
-                <IconButton color="primary" aria-label="upload picture" component="span">
+                <Checkbox
+                    checked={isDone}
+                    // onChange={handleChange}
+                    inputProps={{'aria-label': 'primary checkbox'}}
+                />
+                <TextField label="Todo item" variant="outlined" className={classes.flexOne} value={text}/>
+                <IconButton color="primary" aria-label="remove todo item" component="span">
+                    <RemoveCircle/>
+                </IconButton>
+            </div>
+        )
+    }
+
+    function AddTodoItem() {
+        const EMPTY_TEXT_WIP = "";
+        const [todoTextWIP, setTodoTextWIP] = useState(EMPTY_TEXT_WIP);
+
+        console.log(`render AddTodoItem`)
+        return (
+            <div className={classes.todoItemContainer}>
+                <TextField label="Add todo item" variant="outlined" className={classes.flexOne} value={todoTextWIP}
+                           onChange={event => setTodoTextWIP(event.target.value)}/>
+                <IconButton color="primary" aria-label="add todo item" component="span" onClick={handleAddTodoItem}>
                     <AddCircle/>
                 </IconButton>
             </div>
         )
+
+        function handleAddTodoItem() {
+            if (todoTextWIP) {
+                const nextState = produce(todoAppState, draftState => {
+                    const id = lastId++; // TODO: replace this by uuid
+                    draftState.ids.push(id);
+                    draftState[id] = {
+                        text: todoTextWIP,
+                        isDone: false,
+                        id
+                    };
+                });
+                setTodoAppState(nextState);
+                setTodoTextWIP(EMPTY_TEXT_WIP);
+            }
+        }
     }
 }
 
