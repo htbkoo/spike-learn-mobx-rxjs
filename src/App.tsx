@@ -116,7 +116,7 @@ function TodoListApp() {
                         }))
                     }
                 />
-                <TextField label="Todo item" variant="outlined" className={classes.flexOne} value={text}
+                <TextField label={`id for debugging: ${id}`} variant="outlined" className={classes.flexOne} value={text}
                            disabled={isDone}/>
                 <IconButton color="primary" aria-label="remove todo item" component="span"
                             onClick={()=>
