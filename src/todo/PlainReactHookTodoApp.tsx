@@ -10,6 +10,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
+import {createIncrementalNumberIdGenerator} from "../utils/IdGenerator";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,16 +61,7 @@ interface TodoItem {
 
 type TodoListAppState = { [id: number]: TodoItem, ids: TodoItemId[] };
 
-const idGenerator = (function* generateId() {
-    let lastId = 0;
-    while (true) {
-        yield lastId++;
-    }
-})();
-
-function getNextId(): TodoItemId {
-    return idGenerator.next().value; // TODO: replace this by uuid
-}
+const idGenerator = createIncrementalNumberIdGenerator(0); // TODO: replace this by uuid
 
 function TodoListApp() {
     const classes = useStyles();
@@ -161,7 +153,7 @@ function TodoListApp() {
         function handleAddTodoItem() {
             if (todoTextWIP) {
                 const nextState = produce(todoAppState, draftState => {
-                    const id = getNextId();
+                    const id = idGenerator.getNextId();
                     draftState.ids.push(id);
                     draftState[id] = {
                         text: todoTextWIP,
