@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/spike-learn-mobx-rxjs/static/css/main.69eda509.chunk.css",
-    "main.js": "/spike-learn-mobx-rxjs/static/js/main.7ff85ee3.chunk.js",
-    "main.js.map": "/spike-learn-mobx-rxjs/static/js/main.7ff85ee3.chunk.js.map",
+    "main.js": "/spike-learn-mobx-rxjs/static/js/main.74a8ffbe.chunk.js",
+    "main.js.map": "/spike-learn-mobx-rxjs/static/js/main.74a8ffbe.chunk.js.map",
     "runtime-main.js": "/spike-learn-mobx-rxjs/static/js/runtime-main.e6a41af9.js",
     "runtime-main.js.map": "/spike-learn-mobx-rxjs/static/js/runtime-main.e6a41af9.js.map",
-    "static/js/2.93d79df4.chunk.js": "/spike-learn-mobx-rxjs/static/js/2.93d79df4.chunk.js",
-    "static/js/2.93d79df4.chunk.js.map": "/spike-learn-mobx-rxjs/static/js/2.93d79df4.chunk.js.map",
+    "static/js/2.28cc6617.chunk.js": "/spike-learn-mobx-rxjs/static/js/2.28cc6617.chunk.js",
+    "static/js/2.28cc6617.chunk.js.map": "/spike-learn-mobx-rxjs/static/js/2.28cc6617.chunk.js.map",
     "index.html": "/spike-learn-mobx-rxjs/index.html",
-    "precache-manifest.abdf80626db91a2b769482d8e116ef5a.js": "/spike-learn-mobx-rxjs/precache-manifest.abdf80626db91a2b769482d8e116ef5a.js",
+    "precache-manifest.9221b7c054b63f4860818c8b2092c475.js": "/spike-learn-mobx-rxjs/precache-manifest.9221b7c054b63f4860818c8b2092c475.js",
     "service-worker.js": "/spike-learn-mobx-rxjs/service-worker.js",
     "static/css/main.69eda509.chunk.css.map": "/spike-learn-mobx-rxjs/static/css/main.69eda509.chunk.css.map",
-    "static/js/2.93d79df4.chunk.js.LICENSE.txt": "/spike-learn-mobx-rxjs/static/js/2.93d79df4.chunk.js.LICENSE.txt"
+    "static/js/2.28cc6617.chunk.js.LICENSE.txt": "/spike-learn-mobx-rxjs/static/js/2.28cc6617.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.e6a41af9.js",
-    "static/js/2.93d79df4.chunk.js",
+    "static/js/2.28cc6617.chunk.js",
     "static/css/main.69eda509.chunk.css",
-    "static/js/main.7ff85ee3.chunk.js"
+    "static/js/main.74a8ffbe.chunk.js"
   ]
 }

@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/spike-learn-mobx-rxjs/precache-manifest.abdf80626db91a2b769482d8e116ef5a.js"
+  "/spike-learn-mobx-rxjs/precache-manifest.9221b7c054b63f4860818c8b2092c475.js"
 );
 
 self.addEventListener('message', (event) => {
