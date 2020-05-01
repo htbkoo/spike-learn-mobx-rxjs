@@ -57,21 +57,30 @@ const App: React.FC = () => {
     );
 };
 
+type TodoItemId = number;
+
 interface TodoItem {
-    id: number,
+    id: TodoItemId,
     text: string,
     isDone: boolean,
 }
 
-type TodoListAppState = { [id: number]: TodoItem, ids: number[] };
+type TodoListAppState = { [id: number]: TodoItem, ids: TodoItemId[] };
 
-let lastId = 0;
+const idGenerator = (function* generateId() {
+    let lastId = 0;
+    while (true) {
+        yield lastId++;
+    }
+})();
+
+function getNextId(): TodoItemId {
+    return idGenerator.next().value; // TODO: replace this by uuid
+}
 
 function TodoListApp() {
     const classes = useStyles();
     const [todoAppState, setTodoAppState] = useState<TodoListAppState>({ids: []});
-
-    console.log(`render TodoListApp`)
 
     return (
         <Paper className={classes.todoListApp}>
@@ -96,7 +105,7 @@ function TodoListApp() {
         );
     }
 
-    function TodoItem({text, isDone}: TodoItem & { id: number }) {
+    function TodoItem({text, isDone}: TodoItem & { id: TodoItemId }) {
         return (
             <div className={classes.todoItemContainer}>
                 <Checkbox
@@ -116,7 +125,6 @@ function TodoListApp() {
         const EMPTY_TEXT_WIP = "";
         const [todoTextWIP, setTodoTextWIP] = useState(EMPTY_TEXT_WIP);
 
-        console.log(`render AddTodoItem`)
         return (
             <div className={classes.todoItemContainer}>
                 <TextField label="Add todo item" variant="outlined" className={classes.flexOne} value={todoTextWIP}
@@ -130,7 +138,7 @@ function TodoListApp() {
         function handleAddTodoItem() {
             if (todoTextWIP) {
                 const nextState = produce(todoAppState, draftState => {
-                    const id = lastId++; // TODO: replace this by uuid
+                    const id = getNextId();
                     draftState.ids.push(id);
                     draftState[id] = {
                         text: todoTextWIP,
