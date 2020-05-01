@@ -106,6 +106,8 @@ function TodoListApp() {
     }
 
     function TodoItem({text, isDone, id}: TodoItem) {
+        const [todoTextWIP, setTodoTextWIP] = useState(text);
+
         return (
             <div className={classes.todoItemContainer}>
                 <Checkbox
@@ -116,12 +118,21 @@ function TodoListApp() {
                         }))
                     }
                 />
-                <TextField label={`id for debugging: ${id}`} variant="outlined" className={classes.flexOne} value={text}
-                           disabled={isDone}/>
+                <TextField label={`id for debugging: ${id}`} variant="outlined" className={classes.flexOne}
+                           value={todoTextWIP}
+                           disabled={isDone}
+                           onChange={event => setTodoTextWIP(event.target.value)}
+                           onBlur={() =>
+                               setTodoAppState(produce(todoAppState, nextState => {
+                                   nextState[id].text = todoTextWIP
+                               }))
+                           }
+                />
+
                 <IconButton color="primary" aria-label="remove todo item" component="span"
-                            onClick={()=>
+                            onClick={() =>
                                 setTodoAppState(produce(todoAppState, nextState => {
-                                    nextState.ids = nextState.ids.filter(existingId => existingId!==id);
+                                    nextState.ids = nextState.ids.filter(existingId => existingId !== id);
                                     delete nextState[id];
                                 }))
                             }
