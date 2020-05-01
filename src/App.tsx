@@ -118,7 +118,14 @@ function TodoListApp() {
                 />
                 <TextField label="Todo item" variant="outlined" className={classes.flexOne} value={text}
                            disabled={isDone}/>
-                <IconButton color="primary" aria-label="remove todo item" component="span">
+                <IconButton color="primary" aria-label="remove todo item" component="span"
+                            onClick={()=>
+                                setTodoAppState(produce(todoAppState, nextState => {
+                                    nextState.ids = nextState.ids.filter(existingId => existingId!==id);
+                                    delete nextState[id];
+                                }))
+                            }
+                >
                     <RemoveCircle/>
                 </IconButton>
             </div>
