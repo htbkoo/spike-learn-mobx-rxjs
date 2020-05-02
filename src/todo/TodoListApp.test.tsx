@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {render, fireEvent, waitFor, screen} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import PlainReactHookTodoApp from "./PlainReactHookTodoApp";
 import {TEST_IDS} from "./constants";
@@ -32,6 +32,17 @@ describe('<TodoListApp/>', () => {
             })
 
             describe('Add Todo', () => {
+                it('should be able to update addTodoItemTextField text', async () => {
+                    // given
+                    render(<TodoListApp/>);
+
+                    // when
+                    const textField = screen.getByTestId(TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD) as HTMLInputElement;
+                    await userEvent.type(textField, 'Hello, World!')
+
+                    // then
+                    expect(textField.value).toEqual('Hello, World!');
+                });
             });
 
             describe('Existing Todo', () => {
