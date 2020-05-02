@@ -12,6 +12,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import {createIncrementalNumberIdGenerator} from "../utils/IdGenerator";
 import {TEST_IDS} from "./constants";
+import {TextFieldProps} from "@material-ui/core/TextField/TextField";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -211,17 +212,35 @@ function AddTodoItem(
 
     return (
         <div className={classes.todoItemContainer}>
-            <TextField role={TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD}
-                       inputProps={{'data-testid': TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD}}
-                       variant="outlined"
-                       className={classes.flexOne}
-                       label="Add todo item"
-                       value={text}
-                       onChange={event => setText(event.target.value)}/>
+            <TodoItemTextField
+                role={TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD}
+                label="Add todo item"
+                value={text}
+                onChange={event => setText(event.target.value)}
+            />
             <IconButton color="primary" aria-label="add todo item" component="span" onClick={onAddButtonClick}>
                 <AddCircle/>
             </IconButton>
         </div>
+    )
+}
+
+function TodoItemTextField(props: { value: string, onChange: TextFieldProps['onChange'], testId?: string } & TextFieldProps) {
+    const classes = useStyles();
+
+    return (
+        <TextField
+            {...props}
+            variant="outlined"
+            className={classes.flexOne}
+
+            role={props.role}
+            inputProps={{'data-testid': props.testId || props.role}}
+
+            label={props.label}
+            value={props.value}
+            onChange={props.onChange}
+        />
     )
 }
 
