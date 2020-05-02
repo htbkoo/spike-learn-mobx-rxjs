@@ -230,7 +230,7 @@ function AddTodoItem(
     )
 }
 
-function FullWidthTodoItemTextField(props: { value: string, onChange: TextFieldProps['onChange'], testId?: string } & TextFieldProps) {
+function FullWidthTodoItemTextField({testId, ...props}: { value: string, onChange: TextFieldProps['onChange'], testId?: string } & TextFieldProps) {
     const classes = useStyles();
 
     return (
@@ -238,7 +238,7 @@ function FullWidthTodoItemTextField(props: { value: string, onChange: TextFieldP
             {...props}
             variant="outlined"
             className={classes.flexOne}
-            inputProps={{'data-testid': props.testId || props.role}}
+            inputProps={{'data-testid': testId || props.role}}
         />
     )
 }
