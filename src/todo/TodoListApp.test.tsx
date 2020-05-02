@@ -66,14 +66,14 @@ describe('<TodoListApp/>', () => {
                     // given
                     render(<TodoListApp/>);
                     assertAddTodoItemTextFieldValue("");
-                    expect(screen.queryAllByRole(TEST_IDS.ERROR_SNACKBAR).length).toEqual(0);
+                    assertErrorSnackbarCount(0);
 
                     // when
                     await userEvent.click(screen.getByRole(TEST_IDS.ADD_TODO_ITEM_BUTTON))
 
                     // then
                     assertTodoItemsCount(0);
-                    expect(screen.queryAllByRole(TEST_IDS.ERROR_SNACKBAR).length).toEqual(0);
+                    assertErrorSnackbarCount(1);
                 });
             });
 
@@ -86,6 +86,10 @@ describe('<TodoListApp/>', () => {
 
             function assertTodoItemsCount(expected: number) {
                 expect(screen.queryAllByRole(TEST_IDS.TODO_ITEM_TEXT_FIELD).length).toEqual(expected);
+            }
+
+            function assertErrorSnackbarCount(expected: number) {
+                expect(screen.queryAllByRole(TEST_IDS.ERROR_SNACKBAR).length).toEqual(expected);
             }
         })
     );
