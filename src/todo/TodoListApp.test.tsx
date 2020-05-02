@@ -1,6 +1,7 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {Matcher} from "@testing-library/dom/matches";
 
 import PlainReactHookTodoApp from "./PlainReactHookTodoApp";
 import {TEST_IDS} from "./constants";
@@ -55,7 +56,7 @@ describe('<TodoListApp/>', () => {
                     await userEvent.click(screen.getByRole(TEST_IDS.ADD_TODO_ITEM_BUTTON))
 
                     // then
-                    assertTodoItemsCount(1);
+                    assertCountByRole(TEST_IDS.TODO_ITEM_TEXT_FIELD, 1);
                     assertAddTodoItemTextFieldValue("");
                 });
 
@@ -66,14 +67,14 @@ describe('<TodoListApp/>', () => {
                     // given
                     render(<TodoListApp/>);
                     assertAddTodoItemTextFieldValue("");
-                    assertErrorSnackbarCount(0);
+                    assertCountByRole(TEST_IDS.ERROR_SNACKBAR, 0);
 
                     // when
                     await userEvent.click(screen.getByRole(TEST_IDS.ADD_TODO_ITEM_BUTTON))
 
                     // then
-                    assertTodoItemsCount(0);
-                    assertErrorSnackbarCount(1);
+                    assertCountByRole(TEST_IDS.TODO_ITEM_TEXT_FIELD, 0);
+                    assertCountByRole(TEST_IDS.ERROR_SNACKBAR, 1);
                 });
             });
 
@@ -84,12 +85,8 @@ describe('<TodoListApp/>', () => {
                 expect((screen.getByTestId(TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD) as HTMLInputElement).value).toEqual(expected);
             }
 
-            function assertTodoItemsCount(expected: number) {
-                expect(screen.queryAllByRole(TEST_IDS.TODO_ITEM_TEXT_FIELD).length).toEqual(expected);
-            }
-
-            function assertErrorSnackbarCount(expected: number) {
-                expect(screen.queryAllByRole(TEST_IDS.ERROR_SNACKBAR).length).toEqual(expected);
+            function assertCountByRole(role: Matcher, expectedCount: number) {
+                expect(screen.queryAllByRole(role).length).toEqual(expectedCount);
             }
         })
     );
