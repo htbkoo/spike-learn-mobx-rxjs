@@ -238,13 +238,7 @@ function FullWidthTodoItemTextField(props: { value: string, onChange: TextFieldP
             {...props}
             variant="outlined"
             className={classes.flexOne}
-
-            role={props.role}
             inputProps={{'data-testid': props.testId || props.role}}
-
-            label={props.label}
-            value={props.value}
-            onChange={props.onChange}
         />
     )
 }
