@@ -212,7 +212,7 @@ function AddTodoItem(
 
     return (
         <div className={classes.todoItemContainer}>
-            <TodoItemTextField
+            <FullWidthTodoItemTextField
                 role={TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD}
                 label="Add todo item"
                 value={text}
@@ -225,7 +225,7 @@ function AddTodoItem(
     )
 }
 
-function TodoItemTextField(props: { value: string, onChange: TextFieldProps['onChange'], testId?: string } & TextFieldProps) {
+function FullWidthTodoItemTextField(props: { value: string, onChange: TextFieldProps['onChange'], testId?: string } & TextFieldProps) {
     const classes = useStyles();
 
     return (
