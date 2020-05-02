@@ -113,7 +113,7 @@ function TodoListApp() {
                 />
                 <AddTodoItem text={addTodoText} setText={setAddTodoText} onAddButtonClick={handleAddTodoItem}/>
             </form>
-            <Snackbar open={todoAppState.error.isError} autoHideDuration={6000} onClose={closeErrorSnackbar}>
+            <Snackbar role={TEST_IDS.ERROR_SNACKBAR} open={todoAppState.error.isError} autoHideDuration={6000} onClose={closeErrorSnackbar}>
                 <Alert elevation={6} variant="filled" onClose={closeErrorSnackbar} severity="error">
                     {todoAppState.error.message}
                 </Alert>

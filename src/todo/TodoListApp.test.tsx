@@ -62,17 +62,18 @@ describe('<TodoListApp/>', () => {
                 xit('should be able to add multiple todo items', () => {
                 });
 
-                it('should show error and not add todo item if addTodoItemTextField is empty', async () => {
+                it('should not add todo item and show error instead if addTodoItemTextField is empty', async () => {
                     // given
                     render(<TodoListApp/>);
                     assertAddTodoItemTextFieldValue("");
+                    expect(screen.queryAllByRole(TEST_IDS.ERROR_SNACKBAR).length).toEqual(0);
 
                     // when
                     await userEvent.click(screen.getByRole(TEST_IDS.ADD_TODO_ITEM_BUTTON))
 
                     // then
-                    // TODO: assert error snack bar as well
                     assertTodoItemsCount(0);
+                    expect(screen.queryAllByRole(TEST_IDS.ERROR_SNACKBAR).length).toEqual(0);
                 });
             });
 
