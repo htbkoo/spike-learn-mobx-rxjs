@@ -43,6 +43,22 @@ describe('<TodoListApp/>', () => {
                     // then
                     expect(textField.value).toEqual('Hello, World!');
                 });
+
+                it('should be able to todo item which would also remove the text in addTodoItemTextField', async () => {
+                    // given
+                    render(<TodoListApp/>);
+
+                    const textField = screen.getByTestId(TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD) as HTMLInputElement;
+                    await userEvent.type(textField, 'Hello, World!')
+
+                    // when
+                    await userEvent.click(screen.getByRole(TEST_IDS.ADD_TODO_ITEM_BUTTON))
+
+                    // then
+                    const todoItemsTextFields = screen.getAllByRole(TEST_IDS.TODO_ITEM_TEXT_FIELD);
+                    expect(todoItemsTextFields.length).toEqual(1);
+                    expect(textField.value).toEqual("");
+                });
             });
 
             describe('Existing Todo', () => {

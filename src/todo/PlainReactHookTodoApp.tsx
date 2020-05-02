@@ -223,7 +223,10 @@ function AddTodoItem(
                 value={text}
                 onChange={event => setText(event.target.value)}
             />
-            <IconButton color="primary" aria-label="add todo item" component="span" onClick={onAddButtonClick}>
+            <IconButton role={TEST_IDS.ADD_TODO_ITEM_BUTTON} aria-label={TEST_IDS.ADD_TODO_ITEM_BUTTON}
+                        color="primary"
+                        component="span"
+                        onClick={onAddButtonClick}>
                 <AddCircle/>
             </IconButton>
         </div>
