@@ -134,9 +134,15 @@ function TodoListApp() {
     }
 }
 
+interface TodoItemsHandlers {
+    onCheckBoxToggle: (id: TodoItemId) => void,
+    onTextChange: (id: TodoItemId, text: string) => void,
+    onRemoveButtonClick: (id: TodoItemId) => void,
+}
+
 function TodoItems(
     {items, onCheckBoxToggle, onTextChange, onRemoveButtonClick}:
-        { items: TodoItemData[], onCheckBoxToggle: (id: TodoItemId) => void, onTextChange: (id: TodoItemId, text: string) => void, onRemoveButtonClick: (id: TodoItemId) => void, }
+        { items: TodoItemData[], } & TodoItemsHandlers
 ) {
     return (
         <>
