@@ -41,7 +41,7 @@ describe('<TodoListApp/>', () => {
                     await userEvent.type(textField, 'Hello, World!')
 
                     // then
-                    expect(textField.value).toEqual('Hello, World!');
+                    assertAddTodoItemTextFieldValue('Hello, World!');
                 });
 
                 it('should be able to todo item which would also remove the text in addTodoItemTextField', async () => {
@@ -55,14 +55,37 @@ describe('<TodoListApp/>', () => {
                     await userEvent.click(screen.getByRole(TEST_IDS.ADD_TODO_ITEM_BUTTON))
 
                     // then
-                    const todoItemsTextFields = screen.getAllByRole(TEST_IDS.TODO_ITEM_TEXT_FIELD);
-                    expect(todoItemsTextFields.length).toEqual(1);
-                    expect(textField.value).toEqual("");
+                    assertTodoItemsCount(1);
+                    assertAddTodoItemTextFieldValue("");
+                });
+
+                xit('should be able to add multiple todo items', () => {
+                });
+
+                it('should show error and not add todo item if addTodoItemTextField is empty', async () => {
+                    // given
+                    render(<TodoListApp/>);
+                    assertAddTodoItemTextFieldValue("");
+
+                    // when
+                    await userEvent.click(screen.getByRole(TEST_IDS.ADD_TODO_ITEM_BUTTON))
+
+                    // then
+                    // TODO: assert error snack bar as well
+                    assertTodoItemsCount(0);
                 });
             });
 
             describe('Existing Todo', () => {
             });
+
+            function assertAddTodoItemTextFieldValue(expected: string) {
+                expect((screen.getByTestId(TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD) as HTMLInputElement).value).toEqual(expected);
+            }
+
+            function assertTodoItemsCount(expected: number) {
+                expect(screen.queryAllByRole(TEST_IDS.TODO_ITEM_TEXT_FIELD).length).toEqual(expected);
+            }
         })
     );
 });
