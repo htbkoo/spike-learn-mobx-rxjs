@@ -63,8 +63,11 @@ type TodoListAppState = { [id: number]: TodoItem, ids: TodoItemId[] };
 const idGenerator = createIncrementalNumberIdGenerator(0); // TODO: replace this by uuid
 
 function TodoListApp() {
+    const NO_ERROR = {message: "", isError: false};
+
     const classes = useStyles();
     const [todoAppState, setTodoAppState] = useState<TodoListAppState>({ids: []});
+    const [error, setError] = useState(NO_ERROR);
 
     return (
         <Paper className={classes.todoListApp}>
@@ -128,9 +131,8 @@ function TodoListApp() {
     }
 
     function AddTodoItem() {
-        const EMPTY_TEXT_WIP = "", NO_ERROR = {message: "", isError: false};
+        const EMPTY_TEXT_WIP = "";
         const [todoTextWIP, setTodoTextWIP] = useState(EMPTY_TEXT_WIP);
-        const [error, setError] = useState(NO_ERROR);
 
         return (
             <div className={classes.todoItemContainer}>
@@ -139,8 +141,8 @@ function TodoListApp() {
                 <IconButton color="primary" aria-label="add todo item" component="span" onClick={handleAddTodoItem}>
                     <AddCircle/>
                 </IconButton>
-                <Snackbar open={error.isError} autoHideDuration={6000} onClose={handleCloseErrorSnackbar}>
-                    <Alert elevation={6} variant="filled" onClose={handleCloseErrorSnackbar} severity="error">
+                <Snackbar open={error.isError} autoHideDuration={6000} onClose={closeErrorSnackbar}>
+                    <Alert elevation={6} variant="filled" onClose={closeErrorSnackbar} severity="error">
                         {error.message}
                     </Alert>
                 </Snackbar>
@@ -161,14 +163,18 @@ function TodoListApp() {
                 setTodoAppState(nextState);
                 setTodoTextWIP(EMPTY_TEXT_WIP);
             } else {
-                setError({message: "To do item cannot be empty!", isError: true})
+                showErrorSnackbar("To do item cannot be empty!");
             }
         }
 
-        function handleCloseErrorSnackbar() {
+        function closeErrorSnackbar() {
             setError(produce(error, newError => {
                 newError.isError = false
             }));
+        }
+
+        function showErrorSnackbar(message: string) {
+            setError({isError: true, message})
         }
     }
 }
