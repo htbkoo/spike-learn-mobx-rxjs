@@ -58,7 +58,19 @@ interface TodoItemData {
     isDone: boolean,
 }
 
-type TodoListAppState = { [id: number]: TodoItemData, ids: TodoItemId[] };
+type TodoListAppState = {
+    data: {
+        items: {
+            [id: number]: TodoItemData
+            ids: TodoItemId[],
+        },
+        addTodoText: string,
+    },
+    error: {
+        message: string,
+        isError: boolean,
+    }
+};
 
 const idGenerator = createIncrementalNumberIdGenerator(0); // TODO: replace this by uuid
 
@@ -67,17 +79,19 @@ const NO_ERROR = {message: "", isError: false};
 
 function TodoListApp() {
     const classes = useStyles();
-    const [todoAppState, setTodoAppState] = useState<TodoListAppState>({ids: []});
-    const [error, setError] = useState(NO_ERROR);
-    const [addTodoTextWIP, setAddTodoTextWIP] = useState(EMPTY_TEXT_WIP);
+    const [todoAppState, setTodoAppState] = useState<TodoListAppState>({
+        data: {addTodoText: EMPTY_TEXT_WIP, items: {ids: []}},
+        error: NO_ERROR
+    });
 
+    const addTodoText = todoAppState.data.addTodoText;
     return (
         <Paper className={classes.todoListApp}>
             <Typography variant="h3">Simple To Do List</Typography>
             <form className={classes.todoItemsContainer} noValidate autoComplete="off"
                   onSubmit={event => event.preventDefault()}>
                 <TodoItems
-                    items={todoAppState.ids.map(id => todoAppState[id])}
+                    items={todoAppState.data.items.ids.map(id => todoAppState[id])}
                     onCheckBoxToggle={id =>
                         setTodoAppState(produce(todoAppState, nextState => {
                             nextState[id].isDone = !nextState[id].isDone
@@ -90,47 +104,54 @@ function TodoListApp() {
                     }
                     onRemoveButtonClick={id =>
                         setTodoAppState(produce(todoAppState, nextState => {
-                            nextState.ids = nextState.ids.filter(existingId => existingId !== id);
+                            nextState.data.items.ids = nextState.data.items.ids.filter(existingId => existingId !== id);
                             delete nextState[id];
                         }))
                     }
                 />
-                <AddTodoItem text={addTodoTextWIP} setText={setAddTodoTextWIP} onAddButtonClick={handleAddTodoItem}/>
+                <AddTodoItem text={addTodoText} setText={setAddTodoText} onAddButtonClick={handleAddTodoItem}/>
             </form>
-            <Snackbar open={error.isError} autoHideDuration={6000} onClose={closeErrorSnackbar}>
+            <Snackbar open={todoAppState.error.isError} autoHideDuration={6000} onClose={closeErrorSnackbar}>
                 <Alert elevation={6} variant="filled" onClose={closeErrorSnackbar} severity="error">
-                    {error.message}
+                    {todoAppState.error.message}
                 </Alert>
             </Snackbar>
         </Paper>
     )
 
     function closeErrorSnackbar() {
-        setError(produce(error, newError => {
-            newError.isError = false
+        setTodoAppState(produce(todoAppState, draftState => {
+            draftState.error.isError = false;
         }));
     }
 
     function handleAddTodoItem() {
-        if (addTodoTextWIP) {
-            const nextState = produce(todoAppState, draftState => {
+        if (addTodoText) {
+            setTodoAppState(produce(todoAppState, draftState => {
                 const id = idGenerator.getNextId();
-                draftState.ids.push(id);
+                draftState.data.items.ids.push(id);
                 draftState[id] = {
-                    text: addTodoTextWIP,
+                    text: addTodoText,
                     isDone: false,
                     id
                 };
-            });
-            setTodoAppState(nextState);
-            setAddTodoTextWIP(EMPTY_TEXT_WIP);
+                draftState.data.addTodoText = EMPTY_TEXT_WIP;
+            }));
         } else {
             showErrorSnackbar("To do item cannot be empty!");
         }
     }
 
     function showErrorSnackbar(message: string) {
-        setError({isError: true, message})
+        setTodoAppState(produce(todoAppState, draftState => {
+            draftState.error = {isError: true, message};
+        }));
+    }
+
+    function setAddTodoText(text: string) {
+        setTodoAppState(produce(todoAppState, draftState => {
+            draftState.data.addTodoText = text;
+        }));
     }
 }
 
