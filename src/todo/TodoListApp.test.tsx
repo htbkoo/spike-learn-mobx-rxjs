@@ -60,7 +60,21 @@ describe('<TodoListApp/>', () => {
                     assertAddTodoItemTextFieldValue("");
                 });
 
-                xit('should be able to add multiple todo items', () => {
+                it('should be able to add multiple todo items', async () => {
+                    // given
+                    render(<TodoListApp/>);
+
+                    const count = 5;
+
+                    // when
+                    const textField = screen.getByTestId(TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD) as HTMLInputElement;
+                    for (let i = 0; i < count; i++) {
+                        await userEvent.type(textField, 'Hello, World!')
+                        await userEvent.click(screen.getByRole(TEST_IDS.ADD_TODO_ITEM_BUTTON))
+                    }
+
+                    // then
+                    assertCountByRole(TEST_IDS.TODO_ITEM_TEXT_FIELD, count);
                 });
 
                 it('should not add todo item and show error instead if addTodoItemTextField is empty', async () => {
