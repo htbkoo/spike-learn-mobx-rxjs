@@ -12,7 +12,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import {createIncrementalNumberIdGenerator} from "../utils/IdGenerator";
 
-
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         todoListApp: {
@@ -129,9 +128,9 @@ function TodoListApp() {
     }
 
     function AddTodoItem() {
-        const EMPTY_TEXT_WIP = "", NO_ERROR = "";
+        const EMPTY_TEXT_WIP = "", NO_ERROR = {message: "", isError: false};
         const [todoTextWIP, setTodoTextWIP] = useState(EMPTY_TEXT_WIP);
-        const [errorMessage, setErrorMessage] = useState(NO_ERROR);
+        const [error, setError] = useState(NO_ERROR);
 
         return (
             <div className={classes.todoItemContainer}>
@@ -140,13 +139,11 @@ function TodoListApp() {
                 <IconButton color="primary" aria-label="add todo item" component="span" onClick={handleAddTodoItem}>
                     <AddCircle/>
                 </IconButton>
-                {errorMessage ? (
-                    <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseErrorSnackbar}>
-                        <Alert elevation={6} variant="filled" onClose={handleCloseErrorSnackbar} severity="error">
-                            {errorMessage}
-                        </Alert>
-                    </Snackbar>
-                ) : ""}
+                <Snackbar open={error.isError} autoHideDuration={6000} onClose={handleCloseErrorSnackbar}>
+                    <Alert elevation={6} variant="filled" onClose={handleCloseErrorSnackbar} severity="error">
+                        {error.message}
+                    </Alert>
+                </Snackbar>
             </div>
         )
 
@@ -164,12 +161,14 @@ function TodoListApp() {
                 setTodoAppState(nextState);
                 setTodoTextWIP(EMPTY_TEXT_WIP);
             } else {
-                setErrorMessage("To do item cannot be empty!")
+                setError({message: "To do item cannot be empty!", isError: true})
             }
         }
 
         function handleCloseErrorSnackbar() {
-            setErrorMessage(NO_ERROR);
+            setError(produce(error, newError => {
+                newError.isError = false
+            }));
         }
     }
 }
