@@ -190,10 +190,14 @@ function TodoItem({data: {text, isDone, id}, onCheckBoxToggle, onTextChange, onR
     return (
         <div className={classes.todoItemContainer}>
             <Checkbox checked={isDone} onChange={onCheckBoxToggle}/>
-            <TextField label={`id for debugging: ${id}`} variant="outlined" className={classes.flexOne}
-                       value={text}
-                       disabled={isDone}
-                       onChange={event => onTextChange(event.target.value)}
+            <FullWidthTodoItemTextField
+                role={TEST_IDS.TODO_ITEM_TEXT_FIELD}
+                testId={`${TEST_IDS.TODO_ITEM_TEXT_FIELD}-${id}`}
+
+                label={`id for debugging: ${id}`}
+                value={text}
+                onChange={event => onTextChange(event.target.value)}
+                disabled={isDone}
             />
             <IconButton color="primary" aria-label="remove todo item" component="span"
                         onClick={onRemoveButtonClick}
@@ -214,6 +218,7 @@ function AddTodoItem(
         <div className={classes.todoItemContainer}>
             <FullWidthTodoItemTextField
                 role={TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD}
+
                 label="Add todo item"
                 value={text}
                 onChange={event => setText(event.target.value)}
