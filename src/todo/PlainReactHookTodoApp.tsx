@@ -132,12 +132,12 @@ function TodoListApp() {
 
     function AddTodoItem() {
         const EMPTY_TEXT_WIP = "";
-        const [todoTextWIP, setTodoTextWIP] = useState(EMPTY_TEXT_WIP);
+        const [addTodoTextWIP, setAddTodoTextWIP] = useState(EMPTY_TEXT_WIP);
 
         return (
             <div className={classes.todoItemContainer}>
-                <TextField label="Add todo item" variant="outlined" className={classes.flexOne} value={todoTextWIP}
-                           onChange={event => setTodoTextWIP(event.target.value)}/>
+                <TextField label="Add todo item" variant="outlined" className={classes.flexOne} value={addTodoTextWIP}
+                           onChange={event => setAddTodoTextWIP(event.target.value)}/>
                 <IconButton color="primary" aria-label="add todo item" component="span" onClick={handleAddTodoItem}>
                     <AddCircle/>
                 </IconButton>
@@ -150,18 +150,18 @@ function TodoListApp() {
         )
 
         function handleAddTodoItem() {
-            if (todoTextWIP) {
+            if (addTodoTextWIP) {
                 const nextState = produce(todoAppState, draftState => {
                     const id = idGenerator.getNextId();
                     draftState.ids.push(id);
                     draftState[id] = {
-                        text: todoTextWIP,
+                        text: addTodoTextWIP,
                         isDone: false,
                         id
                     };
                 });
                 setTodoAppState(nextState);
-                setTodoTextWIP(EMPTY_TEXT_WIP);
+                setAddTodoTextWIP(EMPTY_TEXT_WIP);
             } else {
                 showErrorSnackbar("To do item cannot be empty!");
             }
