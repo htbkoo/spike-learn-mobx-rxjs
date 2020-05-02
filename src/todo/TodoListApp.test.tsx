@@ -24,10 +24,10 @@ describe('<TodoListApp/>', () => {
                     render(<TodoListApp/>);
 
                     // when
-                    const element = screen.getByTestId(TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD);
+                    const element = screen.getByTestId(TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD) as HTMLInputElement;
 
                     // then
-                    expect((element as HTMLInputElement).value).toEqual("");
+                    expect(element.value).toEqual("");
                 });
             })
 
