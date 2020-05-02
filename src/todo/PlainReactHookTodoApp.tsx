@@ -11,6 +11,7 @@ import Alert from "@material-ui/lab/Alert";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import {createIncrementalNumberIdGenerator} from "../utils/IdGenerator";
+import {TEST_IDS} from "./constants";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -210,7 +211,10 @@ function AddTodoItem(
 
     return (
         <div className={classes.todoItemContainer}>
-            <TextField variant="outlined" className={classes.flexOne}
+            <TextField role={TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD}
+                       inputProps={{'data-testid': TEST_IDS.ADD_TODO_ITEM_TEXT_FIELD}}
+                       variant="outlined"
+                       className={classes.flexOne}
                        label="Add todo item"
                        value={text}
                        onChange={event => setText(event.target.value)}/>
