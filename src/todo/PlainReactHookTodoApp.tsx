@@ -52,131 +52,146 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type TodoItemId = number;
 
-interface TodoItem {
+interface TodoItemData {
     id: TodoItemId,
     text: string,
     isDone: boolean,
 }
 
-type TodoListAppState = { [id: number]: TodoItem, ids: TodoItemId[] };
+type TodoListAppState = { [id: number]: TodoItemData, ids: TodoItemId[] };
 
 const idGenerator = createIncrementalNumberIdGenerator(0); // TODO: replace this by uuid
 
-function TodoListApp() {
-    const NO_ERROR = {message: "", isError: false};
+const EMPTY_TEXT_WIP = "";
+const NO_ERROR = {message: "", isError: false};
 
+function TodoListApp() {
     const classes = useStyles();
     const [todoAppState, setTodoAppState] = useState<TodoListAppState>({ids: []});
     const [error, setError] = useState(NO_ERROR);
+    const [addTodoTextWIP, setAddTodoTextWIP] = useState(EMPTY_TEXT_WIP);
 
     return (
         <Paper className={classes.todoListApp}>
             <Typography variant="h3">Simple To Do List</Typography>
             <form className={classes.todoItemsContainer} noValidate autoComplete="off"
                   onSubmit={event => event.preventDefault()}>
-                <TodoItems/>
-                <AddTodoItem/>
-            </form>
-        </Paper>
-    )
-
-    function TodoItems() {
-        return (
-            <>
-                {
-                    todoAppState.ids.map(id => (
-                        <TodoItem {...todoAppState[id]} key={id}/>
-                    ))
-                }
-            </>
-        );
-    }
-
-    function TodoItem({text, isDone, id}: TodoItem) {
-        const [todoTextWIP, setTodoTextWIP] = useState(text);
-
-        return (
-            <div className={classes.todoItemContainer}>
-                <Checkbox
-                    checked={isDone}
-                    onChange={() =>
+                <TodoItems
+                    items={todoAppState.ids.map(id => todoAppState[id])}
+                    onCheckBoxToggle={id =>
                         setTodoAppState(produce(todoAppState, nextState => {
                             nextState[id].isDone = !nextState[id].isDone
                         }))
                     }
+                    onTextChange={(id, text) =>
+                        setTodoAppState(produce(todoAppState, nextState => {
+                            nextState[id].text = text
+                        }))
+                    }
+                    onRemoveButtonClick={id =>
+                        setTodoAppState(produce(todoAppState, nextState => {
+                            nextState.ids = nextState.ids.filter(existingId => existingId !== id);
+                            delete nextState[id];
+                        }))
+                    }
                 />
-                <TextField label={`id for debugging: ${id}`} variant="outlined" className={classes.flexOne}
-                           value={todoTextWIP}
-                           disabled={isDone}
-                           onChange={event => setTodoTextWIP(event.target.value)}
-                           onBlur={() =>
-                               setTodoAppState(produce(todoAppState, nextState => {
-                                   nextState[id].text = todoTextWIP
-                               }))
-                           }
-                />
+                <AddTodoItem text={addTodoTextWIP} setText={setAddTodoTextWIP} onAddButtonClick={handleAddTodoItem}/>
+            </form>
+            <Snackbar open={error.isError} autoHideDuration={6000} onClose={closeErrorSnackbar}>
+                <Alert elevation={6} variant="filled" onClose={closeErrorSnackbar} severity="error">
+                    {error.message}
+                </Alert>
+            </Snackbar>
+        </Paper>
+    )
 
-                <IconButton color="primary" aria-label="remove todo item" component="span"
-                            onClick={() =>
-                                setTodoAppState(produce(todoAppState, nextState => {
-                                    nextState.ids = nextState.ids.filter(existingId => existingId !== id);
-                                    delete nextState[id];
-                                }))
-                            }
-                >
-                    <RemoveCircle/>
-                </IconButton>
-            </div>
-        )
+    function closeErrorSnackbar() {
+        setError(produce(error, newError => {
+            newError.isError = false
+        }));
     }
 
-    function AddTodoItem() {
-        const EMPTY_TEXT_WIP = "";
-        const [addTodoTextWIP, setAddTodoTextWIP] = useState(EMPTY_TEXT_WIP);
+    function handleAddTodoItem() {
+        if (addTodoTextWIP) {
+            const nextState = produce(todoAppState, draftState => {
+                const id = idGenerator.getNextId();
+                draftState.ids.push(id);
+                draftState[id] = {
+                    text: addTodoTextWIP,
+                    isDone: false,
+                    id
+                };
+            });
+            setTodoAppState(nextState);
+            setAddTodoTextWIP(EMPTY_TEXT_WIP);
+        } else {
+            showErrorSnackbar("To do item cannot be empty!");
+        }
+    }
 
-        return (
-            <div className={classes.todoItemContainer}>
-                <TextField label="Add todo item" variant="outlined" className={classes.flexOne} value={addTodoTextWIP}
-                           onChange={event => setAddTodoTextWIP(event.target.value)}/>
-                <IconButton color="primary" aria-label="add todo item" component="span" onClick={handleAddTodoItem}>
-                    <AddCircle/>
-                </IconButton>
-                <Snackbar open={error.isError} autoHideDuration={6000} onClose={closeErrorSnackbar}>
-                    <Alert elevation={6} variant="filled" onClose={closeErrorSnackbar} severity="error">
-                        {error.message}
-                    </Alert>
-                </Snackbar>
-            </div>
-        )
+    function showErrorSnackbar(message: string) {
+        setError({isError: true, message})
+    }
+}
 
-        function handleAddTodoItem() {
-            if (addTodoTextWIP) {
-                const nextState = produce(todoAppState, draftState => {
-                    const id = idGenerator.getNextId();
-                    draftState.ids.push(id);
-                    draftState[id] = {
-                        text: addTodoTextWIP,
-                        isDone: false,
-                        id
-                    };
-                });
-                setTodoAppState(nextState);
-                setAddTodoTextWIP(EMPTY_TEXT_WIP);
-            } else {
-                showErrorSnackbar("To do item cannot be empty!");
+function TodoItems(
+    {items, onCheckBoxToggle, onTextChange, onRemoveButtonClick}:
+        { items: TodoItemData[], onCheckBoxToggle: (id: TodoItemId) => void, onTextChange: (id: TodoItemId, text: string) => void, onRemoveButtonClick: (id: TodoItemId) => void, }
+) {
+    return (
+        <>
+            {
+                items.map(item => (
+                    <TodoItem
+                        key={item.id}
+                        data={item}
+                        onCheckBoxToggle={() => onCheckBoxToggle(item.id)}
+                        onTextChange={text => onTextChange(item.id, text)}
+                        onRemoveButtonClick={() => onRemoveButtonClick(item.id)}
+                    />
+                ))
             }
-        }
+        </>
+    );
+}
 
-        function closeErrorSnackbar() {
-            setError(produce(error, newError => {
-                newError.isError = false
-            }));
-        }
+function TodoItem({data: {text, isDone, id}, onCheckBoxToggle, onTextChange, onRemoveButtonClick}: { data: TodoItemData, onCheckBoxToggle: () => void, onTextChange: (text: string) => void, onRemoveButtonClick: () => void }) {
+    const classes = useStyles();
 
-        function showErrorSnackbar(message: string) {
-            setError({isError: true, message})
-        }
-    }
+    return (
+        <div className={classes.todoItemContainer}>
+            <Checkbox checked={isDone} onChange={onCheckBoxToggle}/>
+            <TextField label={`id for debugging: ${id}`} variant="outlined" className={classes.flexOne}
+                       value={text}
+                       disabled={isDone}
+                       onChange={event => onTextChange(event.target.value)}
+            />
+            <IconButton color="primary" aria-label="remove todo item" component="span"
+                        onClick={onRemoveButtonClick}
+            >
+                <RemoveCircle/>
+            </IconButton>
+        </div>
+    )
+}
+
+function AddTodoItem(
+    {text, setText, onAddButtonClick}:
+        { text: string, setText: (text: string) => void, onAddButtonClick: () => void, }
+) {
+    const classes = useStyles();
+
+    return (
+        <div className={classes.todoItemContainer}>
+            <TextField variant="outlined" className={classes.flexOne}
+                       label="Add todo item"
+                       value={text}
+                       onChange={event => setText(event.target.value)}/>
+            <IconButton color="primary" aria-label="add todo item" component="span" onClick={onAddButtonClick}>
+                <AddCircle/>
+            </IconButton>
+        </div>
+    )
 }
 
 export default TodoListApp;
