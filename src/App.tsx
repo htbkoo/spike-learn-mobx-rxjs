@@ -10,14 +10,6 @@ import AppNavigationBar from "./AppNavigationBar";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         appContainer: {
-            // "backgroundColor": theme.palette.background.default,
-            // "minHeight": "100vh",
-            // "display": "flex",
-            // "flexDirection": "row",
-            // "alignItems": "center",
-            // "justifyContent": "center",
-            // "fontSize": "calc(10px + 2vmin)",
-            // "color": theme.palette.primary.main
         },
     }),
 );
