@@ -10,7 +10,7 @@ import {ListItemLinkProps} from "./utils/StyledRouterLink";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         subSection: {
-            "paddingLeft": "10%",
+            color: theme.palette.primary.light
         },
         drawerContainer: {
             overflow: 'auto',
