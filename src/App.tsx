@@ -3,7 +3,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import {Route, Switch, useRouteMatch} from "react-router-dom";
 
-import {TodoListApp} from "./todo/TodoApp";
+import {TodoListApp} from "./todo/TodoListApp";
 import ClippedResponsiveDrawer from "./ClippedResponsiveDrawer";
 import AppNavigationBar from "./AppNavigationBar";
 

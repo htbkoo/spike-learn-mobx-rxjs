@@ -3,7 +3,7 @@ import {Route, Switch} from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
-import {TodoListAppMenu} from "./todo/TodoApp";
+import {TodoListAppMenu} from "./todo/TodoListApp";
 import LinksMenuList from "./utils/LinksMenuList";
 import {ListItemLinkProps} from "./utils/StyledRouterLink";
 
