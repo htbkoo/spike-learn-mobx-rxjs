@@ -4,9 +4,9 @@ import {Link as RouterLink, LinkProps as RouterLinkProps} from 'react-router-dom
 import Link, {LinkProps} from '@material-ui/core/Link';
 import {Omit} from '@material-ui/types';
 
-type Props = { to: RouterLinkProps['to'], children: React.ReactNode, } & LinkProps;
+export type StyledRouterLinkProps = { to: RouterLinkProps['to'], children: React.ReactNode, } & LinkProps;
 
-export default function StyledRouterLink({to, children, ...linkProps}: Props) {
+export default function StyledRouterLink({to, children, ...linkProps}: StyledRouterLinkProps) {
     return (
         <Link component={RouterLink} to={to as any} {...linkProps}>
             {children}
@@ -14,7 +14,7 @@ export default function StyledRouterLink({to, children, ...linkProps}: Props) {
     );
 }
 
-export function NoPropsForwardingLink({to, children, ...linkProps}: Props) {
+export function NoPropsForwardingLink({to, children, ...linkProps}: StyledRouterLinkProps) {
     return (
         <Link component={createLinkBehavior(to)} {...linkProps}>
             {children}
