@@ -44,7 +44,7 @@ const App: React.FC = () => {
                 {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
                 <Switch>
                     <Route exact path={URL_PATHS.HOME}>
-                        <div />
+                        <h3>Please select an app.</h3>
                     </Route>
                     <Route path={URL_PATHS.TODO_APP}>
                         <TodoListApp />

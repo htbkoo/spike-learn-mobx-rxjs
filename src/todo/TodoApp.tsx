@@ -30,7 +30,7 @@ function TodoListApp() {
             {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
             <Switch>
                 <Route exact path={match.path}>
-                    <h3>Please select a topic.</h3>
+                    <h3>Please select an implementation.</h3>
                 </Route>
                 <Route path={`${match.path}/${URL_PATHS.REACT_HOOKS}`}>
                     <PlainReactHookTodoApp />
