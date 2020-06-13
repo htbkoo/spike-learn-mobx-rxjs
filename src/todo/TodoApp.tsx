@@ -1,25 +1,8 @@
 import React from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import {createStyles, Theme} from "@material-ui/core";
 import {Route, Switch, useRouteMatch,} from "react-router-dom";
 
 import PlainReactHookTodoApp from "./PlainReactHookTodoApp";
 import StyledRouterLink from "../utils/StyledRouterLink";
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        appContainer: {
-            "backgroundColor": theme.palette.background.default,
-            "minHeight": "100vh",
-            "display": "flex",
-            "flexDirection": "column",
-            "alignItems": "center",
-            "justifyContent": "center",
-            "fontSize": "calc(10px + 2vmin)",
-            "color": theme.palette.primary.main
-        },
-    }),
-);
 
 const URL_PATHS = {
     REACT_HOOKS: "react-hooks"
