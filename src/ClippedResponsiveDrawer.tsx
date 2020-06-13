@@ -66,7 +66,6 @@ export default function ClippedResponsiveDrawer(
     const drawer = (
         <div>
             <Toolbar />
-            <Divider />
             {drawerContent}
         </div>
     );
