@@ -18,7 +18,7 @@ export default function StyledRouterLink({to, children, ...linkProps}: StyledRou
 }
 
 
-interface ListItemLinkProps {
+export interface ListItemLinkProps {
     icon?: React.ReactElement;
     primary: string;
     to: string;
