@@ -70,7 +70,7 @@ function getTitle(pathname: string): string {
     const endIndex = pathname.indexOf("/", startIndex + 1);
     const pathFirstPart = pathname.substring(startIndex, endIndex !== -1 ? endIndex : pathname.length);
 
-    const matchedConfig = APP_CONFIGURATIONS.find(({title}) => title === pathFirstPart);
+    const matchedConfig = APP_CONFIGURATIONS.find(({path}) => path === pathFirstPart);
 
     return matchedConfig?.title ?? "";
 }
