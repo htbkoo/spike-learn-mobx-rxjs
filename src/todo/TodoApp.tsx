@@ -2,7 +2,7 @@ import React from "react";
 import {Route, Switch, useRouteMatch,} from "react-router-dom";
 
 import PlainReactHookTodoApp from "./PlainReactHookTodoApp";
-import StyledRouterLink from "../utils/StyledRouterLink";
+import LinksMenuList from "../utils/LinksMenuList";
 
 const URL_PATHS = {
     REACT_HOOKS: "react-hooks"
@@ -13,11 +13,11 @@ function TodoListAppMenu() {
 
     return (
         <nav>
-            <ul>
-                <li>
-                    <StyledRouterLink to={`${match.url}/${URL_PATHS.REACT_HOOKS}`}>With React Hooks</StyledRouterLink>
-                </li>
-            </ul>
+            <LinksMenuList
+                items={[
+                    {to: `${match.url}/${URL_PATHS.REACT_HOOKS}`, primary: "With React Hooks"}
+                ]}
+            />
         </nav>
     )
 }
