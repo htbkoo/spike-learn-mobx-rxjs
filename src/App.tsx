@@ -29,7 +29,7 @@ const URL_PATHS = {
 
 const TITLES = {
     [URL_PATHS.HOME]: "",
-    [URL_PATHS.TODO_APP]: "TODO APP",
+    [URL_PATHS.TODO_APP]: ": TODO APP",
 
 }
 
@@ -40,7 +40,7 @@ const App: React.FC = () => {
     return (
         <div className={classes.appContainer}>
             <ClippedResponsiveDrawer
-                title={getTitle(match.url)}
+                title={`spike-learn-mobx-rxjs ${getTitle(match.url)}`}
                 drawerContent={
                     <AppNavigationBar
                         items={[
@@ -68,11 +68,12 @@ const App: React.FC = () => {
 };
 
 function getTitle(pathname: string): string {
+    const startIndex = pathname.indexOf("/");
+    const endIndex = pathname.indexOf("/", startIndex + 1);
+    const pathFirstPart = pathname.substring(startIndex, endIndex !== -1 ? endIndex : pathname.length);
+
     const matchedKey = Object.keys(TITLES)
-        .find(key => {
-            console.log(`${key} - ${pathname} - ${key === pathname}`);
-            return key === pathname
-        });
+        .find(key => key === pathFirstPart);
 
     if (matchedKey) {
         return TITLES[matchedKey];
