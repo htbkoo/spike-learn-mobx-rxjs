@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function ClippedDrawer(
+export default function ClippedResponsiveDrawer(
     {title, drawerContent, children}:
         { title: string, drawerContent: React.ReactNode, children: React.ReactNode }
 ) {
