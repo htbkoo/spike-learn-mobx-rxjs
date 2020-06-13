@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const URL_PATHS = {
-    // TODO: improve this
     REACT_HOOKS: "react-hooks"
 }
 
