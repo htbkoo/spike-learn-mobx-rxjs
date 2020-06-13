@@ -3,9 +3,9 @@ import {Route, Switch} from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
-import {LinkItem} from "./types";
 import {TodoListAppMenu} from "./todo/TodoApp";
 import LinksMenuList from "./utils/LinksMenuList";
+import {ListItemLinkProps} from "./utils/StyledRouterLink";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -23,18 +23,13 @@ const URL_PATHS = {
     TODO_APP: "/todo-app"
 }
 
-export default function AppNavigationBar({items}: { items: LinkItem[] }) {
+export default function AppNavigationBar({items}: { items: ListItemLinkProps[] }) {
     const classes = useStyles();
 
     return (
         <div className={classes.drawerContainer}>
             <nav>
-                <LinksMenuList
-                    items={[
-                        {to: URL_PATHS.HOME, primary: "Home",},
-                        {to: URL_PATHS.TODO_APP, primary: "TodoApp",}
-                    ]}
-                />
+                <LinksMenuList items={items} />
 
                 <Divider />
 

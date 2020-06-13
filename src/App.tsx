@@ -35,8 +35,8 @@ const App: React.FC = () => {
                 drawerContent={
                     <AppNavigationBar
                         items={[
-                            {to: URL_PATHS.HOME, content: "Home"},
-                            {to: URL_PATHS.TODO_APP, content: "TodoApp"},
+                            {to: URL_PATHS.HOME, primary: "Home",},
+                            {to: URL_PATHS.TODO_APP, primary: "TodoApp",}
                         ]}
                     />
                 }
