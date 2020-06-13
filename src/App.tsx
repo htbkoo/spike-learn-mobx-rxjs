@@ -1,14 +1,10 @@
 import React from 'react';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 import TodoListApp from "./todo/TodoApp";
+import StyledRouterLink from "./utils/StyledRouterLink";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -39,10 +35,10 @@ const App: React.FC = () => {
                 <nav>
                     <ul>
                         <li>
-                            <Link to={URL_PATHS.HOME}>Home</Link>
+                            <StyledRouterLink to={URL_PATHS.HOME}>Home</StyledRouterLink>
                         </li>
                         <li>
-                            <Link to={URL_PATHS.TODO_APP}>TodoApp</Link>
+                            <StyledRouterLink to={URL_PATHS.TODO_APP}>TodoApp</StyledRouterLink>
                         </li>
                     </ul>
                 </nav>
@@ -56,7 +52,7 @@ const App: React.FC = () => {
                         <TodoListApp />
                     </Route>
                     <Route path="*">
-                        <div/>
+                        <div />
                     </Route>
                 </Switch>
             </div>
@@ -64,7 +60,7 @@ const App: React.FC = () => {
     );
 };
 
-function AppNavigationBar(){
+function AppNavigationBar() {
 
 }
 

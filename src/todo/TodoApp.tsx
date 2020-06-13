@@ -1,15 +1,10 @@
 import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    useRouteMatch,
-} from "react-router-dom";
+import {Route, Switch, useRouteMatch,} from "react-router-dom";
 
 import PlainReactHookTodoApp from "./PlainReactHookTodoApp";
+import StyledRouterLink from "../utils/StyledRouterLink";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -41,7 +36,7 @@ function TodoListApp() {
             <nav>
                 <ul>
                     <li>
-                        <Link to={`${match.url}/${URL_PATHS.REACT_HOOKS}`}>With React Hooks</Link>
+                        <StyledRouterLink to={`${match.url}/${URL_PATHS.REACT_HOOKS}`}>With React Hooks</StyledRouterLink>
                     </li>
                 </ul>
             </nav>
