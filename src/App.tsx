@@ -1,10 +1,9 @@
 import React from 'react';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {Route, Switch, useRouteMatch} from "react-router-dom";
 
-import {TodoListApp, TodoListAppMenu} from "./todo/TodoApp";
-import AppNavigationBreadcrumbs from "./AppNavigationBreadcrumbs";
+import {TodoListApp} from "./todo/TodoApp";
 import ClippedResponsiveDrawer from "./ClippedResponsiveDrawer";
 import AppNavigationBar from "./AppNavigationBar";
 
@@ -28,40 +27,58 @@ const URL_PATHS = {
     TODO_APP: "/todo-app"
 }
 
+const TITLES = {
+    [URL_PATHS.HOME]: "",
+    [URL_PATHS.TODO_APP]: "TODO APP",
+
+}
+
 const App: React.FC = () => {
     const classes = useStyles();
+    const match = useRouteMatch();
 
     return (
-        <Router>
-            <div className={classes.appContainer}>
-                <ClippedResponsiveDrawer
-                    title="spike-learn-mobx-rxjs"
-                    drawerContent={
-
-                        <AppNavigationBar
-                            items={[
-                                {to: URL_PATHS.HOME, content: "Home"},
-                                {to: URL_PATHS.TODO_APP, content: "TodoApp"},
-                            ]}
-                        />
-                    }
-                >
-                    {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
-                    <Switch>
-                        <Route exact path={URL_PATHS.HOME}>
-                            <div />
-                        </Route>
-                        <Route path={URL_PATHS.TODO_APP}>
-                            <TodoListApp />
-                        </Route>
-                        <Route path="*">
-                            <div />
-                        </Route>
-                    </Switch>
-                </ClippedResponsiveDrawer>
-            </div>
-        </Router>
+        <div className={classes.appContainer}>
+            <ClippedResponsiveDrawer
+                title={getTitle(match.url)}
+                drawerContent={
+                    <AppNavigationBar
+                        items={[
+                            {to: URL_PATHS.HOME, content: "Home"},
+                            {to: URL_PATHS.TODO_APP, content: "TodoApp"},
+                        ]}
+                    />
+                }
+            >
+                {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
+                <Switch>
+                    <Route exact path={URL_PATHS.HOME}>
+                        <div />
+                    </Route>
+                    <Route path={URL_PATHS.TODO_APP}>
+                        <TodoListApp />
+                    </Route>
+                    <Route path="*">
+                        <div />
+                    </Route>
+                </Switch>
+            </ClippedResponsiveDrawer>
+        </div>
     );
 };
+
+function getTitle(pathname: string): string {
+    const matchedKey = Object.keys(TITLES)
+        .find(key => {
+            console.log(`${key} - ${pathname} - ${key === pathname}`);
+            return key === pathname
+        });
+
+    if (matchedKey) {
+        return TITLES[matchedKey];
+    } else {
+        return "";
+    }
+}
 
 export default App;
