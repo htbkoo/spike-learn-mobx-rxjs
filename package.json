@@ -30,7 +30,10 @@
     "gh-pages:rebuild": "npm run gh-pages:clean && npm run build && npm run gh-pages:rename"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "plugins": [
+      "only-warn"
+    ]
   },
   "browserslist": {
     "production": [
