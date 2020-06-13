@@ -67,6 +67,7 @@ const App: React.FC = () => {
     );
 };
 
+// TODO: extract to util.ts and add tests
 function getTitle(pathname: string): string {
     const startIndex = pathname.indexOf("/");
     const endIndex = pathname.indexOf("/", startIndex + 1);
