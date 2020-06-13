@@ -9,8 +9,7 @@ import AppNavigationBar from "./AppNavigationBar";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        appContainer: {
-        },
+        appContainer: {},
     }),
 );
 
