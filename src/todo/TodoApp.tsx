@@ -36,7 +36,7 @@ function TodoListApp() {
                     <PlainReactHookTodoApp />
                 </Route>
                 <Route path="*">
-                    <div/>
+                    <div />
                 </Route>
             </Switch>
         </div>
