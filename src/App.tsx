@@ -79,7 +79,7 @@ function toNavigationItem({path, linkText, subSectionMenu}: AppConfiguration): A
 
 function toRoute({appComponent, path, isPathExact}: AppConfiguration) {
     return (
-        <Route exact={isPathExact} path={path}>
+        <Route exact={isPathExact} path={path} key={path}>
             {appComponent}
         </Route>
     )

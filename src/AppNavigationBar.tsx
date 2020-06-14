@@ -48,7 +48,7 @@ export default function AppNavigationBar({items}: { items: AppNavigationBarProps
 function toSubSectionMenu({to, subSectionMenu}: AppNavigationBarProps) {
     if (subSectionMenu) {
         return (
-            <Route path={to}>
+            <Route path={to} key={to}>
                 {subSectionMenu}
             </Route>
         );
