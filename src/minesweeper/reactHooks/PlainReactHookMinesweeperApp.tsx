@@ -4,7 +4,7 @@ import {createStyles, Theme} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import produce from "immer";
 
-import {blankBoardData, getBombsList, SimpleCoordinates} from "../utils";
+import {blankBoardData, initializedBoardData} from "../utils";
 import {BoardData, BoardDimension, CellCoordinates} from "../types";
 import GameConfigDialog from "./GameConfigDialog";
 
@@ -106,64 +106,6 @@ function PlainReactHookMinesweeperApp() {
 
             }
         }))
-    }
-}
-
-const EIGHT_WAYS_NEIGHBOURS: SimpleCoordinates[] = [
-    [-1, -1],
-    [-1, 0],
-    [-1, 1],
-    [0, -1],
-    [0, 1],
-    [1, -1],
-    [1, 0],
-    [1, 1],
-];
-
-function initializedBoardData(
-    {oldBoard, clicked, numBomb}: { oldBoard: BoardData, clicked: CellCoordinates, numBomb: number }
-): BoardData {
-    const dimension: BoardDimension = getDimension(oldBoard)
-
-    // TODO: refactor this -> probably create a convenient function that takes both
-    const bombCandidates = getBombsList({takeCount: numBomb, dimension, clicked});
-
-    return produce(oldBoard, newBoard => {
-        bombCandidates.forEach(([row, col]) => {
-            newBoard[row][col].isBomb = true;
-            addCountsToNeighbour();
-
-            // TODO: extract this to global function for testability
-            function addCountsToNeighbour() {
-                EIGHT_WAYS_NEIGHBOURS
-                    .map(toExactCoordinates)
-                    .filter(keepValidCoordinates)
-                    .forEach(addCount)
-            }
-
-            function toExactCoordinates([drow, dcol]): SimpleCoordinates {
-                return [row + drow, col + dcol];
-            }
-
-            function keepValidCoordinates([exactRow, exactCol]) {
-                const isRowValid = (exactRow >= 0) && (exactRow < dimension.height)
-                const isColValid = (exactCol >= 0) && (exactCol < dimension.width)
-
-                return isRowValid && isColValid;
-            }
-
-            function addCount([exactRow, exactCol]) {
-                newBoard[exactRow][exactCol].count++;
-            }
-        })
-
-    })
-}
-
-function getDimension(boardData: BoardData): BoardDimension {
-    return {
-        width: boardData[0].length,
-        height: boardData.length
     }
 }
 
