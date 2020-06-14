@@ -65,19 +65,19 @@ function PlainReactHookMinesweeperApp() {
 
     const [state, setState] = useState<AppState>({})
 
+    const gameBoardIfGameStarted = state.game
+        ? (
+            <BoardComponent
+                data={state.game.boardData}
+                isPlaying={state.game.isPlaying}
+                handleClick={handleClick}
+            />
+        )
+        : ""
+
     return (
         <div className={classes.gameAppContainer}>
-            {
-                state.game
-                    ? (
-                        <BoardComponent
-                            data={state.game.boardData}
-                            isPlaying={state.game.isPlaying}
-                            handleClick={handleClick}
-                        />
-                    )
-                    : ""
-            }
+            {gameBoardIfGameStarted}
             <GameConfigDialog isOpen={!state.game} onStartGame={startGame} />
         </div>
     );
@@ -184,13 +184,11 @@ function DialogTextField<T>({value, setValue, ...otherProps}: { value: T, setVal
 
 function blankBoardData({width, height}: BoardDimension): BoardData {
     return range(height).map(_ =>
-        range(width).map(_ =>
-            ({
-                count: 0,
-                isBomb: false,
-                isOpen: false,
-            } as CellData)
-        )
+        range(width).map(_ => ({
+            count: 0,
+            isBomb: false,
+            isOpen: false,
+        }))
     )
 }
 
