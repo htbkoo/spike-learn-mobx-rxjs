@@ -3,7 +3,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import produce from "immer";
 
-import {createNewGameState, getNextGameState, checkIsPlaying} from "../utils";
+import {checkIsPlaying, createNewGameState, getNextGameState} from "../utils";
 import {BoardData, BoardDimension, CellCoordinates} from "../types";
 import GameConfigDialog from "./GameConfigDialog";
 import BoardComponent from "./BoardComponent";
@@ -64,7 +64,7 @@ function PlainReactHookMinesweeperApp() {
     return (
         <div className={classes.gameAppContainer}>
             {gameBoardIfGameStarted}
-            <GameConfigDialog isOpen={shouldShowDialog} onStartGame={startGame} />
+            <GameConfigDialog isOpen={shouldShowDialog} title={getTitle(state.game?.status)} onStartGame={startGame} />
         </div>
     );
 
@@ -81,6 +81,18 @@ function PlainReactHookMinesweeperApp() {
             }
         }))
     }
+}
+
+function getTitle(status?: GameStatus) {
+    if (status) {
+        if (status === GameStatus.WIN) {
+            return "You win! Congratulations!"
+        } else if (status === GameStatus.LOSE) {
+            return "Unfortunately, you lose!"
+        }
+    }
+    return "Setup the game";
+
 }
 
 export default PlainReactHookMinesweeperApp;

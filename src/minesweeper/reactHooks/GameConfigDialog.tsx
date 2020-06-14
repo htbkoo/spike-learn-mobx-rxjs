@@ -10,7 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import produce from "immer";
 import {GameConfig} from "./PlainReactHookMinesweeperApp";
 
-function GameConfigDialog({isOpen, onStartGame}: { isOpen: boolean, onStartGame: (config: GameConfig) => void }) {
+function GameConfigDialog({isOpen, title, onStartGame}: { isOpen: boolean, title: string, onStartGame: (config: GameConfig) => void }) {
     const [config, setConfig] = useState<GameConfig>({
         width: 10,
         height: 8,
@@ -32,7 +32,7 @@ function GameConfigDialog({isOpen, onStartGame}: { isOpen: boolean, onStartGame:
 
     return (
         <Dialog open={isOpen} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Setup the game</DialogTitle>
+            <DialogTitle id="form-dialog-title">{title}</DialogTitle>
 
             <DialogContent>
                 <DialogContentText>Please set the game config</DialogContentText>
