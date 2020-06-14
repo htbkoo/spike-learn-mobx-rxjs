@@ -140,33 +140,48 @@ export function getNextBoard(board: BoardData, {row, col}: CellCoordinates): Boa
     const queue: SimpleCoordinatesList = [[row, col]];
 
     return produce(board, newBoard => {
-        while (queue.length > 0) {
-            const top: SimpleCoordinates = queue.shift() as any;
-            const origin = newBoard[top[0]][top[1]];
-            if (!origin.isBomb) {
-                origin.isOpen = true;
+        const clickedCell = newBoard[row][col];
+        clickedCell.isOpen = true;
+
+        if (!clickedCell.isBomb) {
+            while (queue.length > 0) {
+                const top: SimpleCoordinates = queue.shift() as any;
+                const origin = newBoard[top[0]][top[1]];
+                if (!origin.isBomb) {
+                    origin.isOpen = true;
+                }
+
+                findValidNeighbours(FOUR_WAYS_NEIGHBOURS, top, dimension)
+                    .filter(keepIfNotOpened)
+                    .filter(keepUnvisited)
+                    .filter(keepIfShouldVisit)
+                    .forEach(addToQueue)
+            }
+        }
+
+        function keepIfNotOpened([row, col]) {
+            return !newBoard[row][col].isOpen;
+        }
+
+        function keepUnvisited([row, col]) {
+            return !visited[row][col];
+        }
+
+        function keepIfShouldVisit([row, col]) {
+            if (!newBoard[row][col].isBomb) {
+                newBoard[row][col].isOpen = true;
             }
 
-            findValidNeighbours(FOUR_WAYS_NEIGHBOURS, top, dimension)
-                .filter(keepUnvisited)
-                .filter(keepIfShouldVisit)
-                .forEach(addToQueue)
+            const current = board[row][col];
+            return !current.isBomb && current.count === 0;
+        }
+
+        function addToQueue([row, col]) {
+            visited[row][col] = true;
+            queue.push([row, col]);
         }
     });
 
-    function keepUnvisited([row, col]) {
-        return !visited[row][col];
-    }
-
-    function keepIfShouldVisit([row, col]) {
-        const current = board[row][col];
-        return !current.isBomb && current.count === 0;
-    }
-
-    function addToQueue([row, col]) {
-        visited[row][col] = true;
-        queue.push([row, col]);
-    }
 }
 
 export function countNumCellsOpened(board: BoardData) {
