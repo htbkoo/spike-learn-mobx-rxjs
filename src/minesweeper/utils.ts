@@ -2,7 +2,7 @@ import {flatten, range, shuffle, take} from "lodash";
 import produce from "immer";
 
 import {BoardData, BoardDimension, CellCoordinates} from "./types";
-import {AppState, GameStatus} from "./reactHooks/PlainReactHookMinesweeperApp";
+import {AppState, GameState, GameStatus} from "./reactHooks/PlainReactHookMinesweeperApp";
 
 export type SimpleCoordinates = [number, number,];
 export type SimpleCoordinatesList = SimpleCoordinates[];
@@ -108,4 +108,25 @@ function getDimension(boardData: BoardData): BoardDimension {
 
 export function isPlaying(state: AppState): boolean {
     return !!state.game && GameStatus.PLAYING === state.game.status;
+}
+
+export function getNextGameState(prevState: GameState, clicked: CellCoordinates): GameState {
+    return produce(prevState, newState => {
+        const boardData = prevState.isInitialized
+            ? prevState.boardData
+            : initializedBoardData({
+                oldBoard: prevState.boardData,
+                numBomb: prevState.config.numBomb,
+                clicked,
+            });
+
+        newState.boardData = getNextBoard(boardData, clicked)
+        newState.isInitialized = true;
+    });
+}
+
+export function getNextBoard(prevBoard: BoardData, {row, col}: CellCoordinates): BoardData {
+    return produce(prevBoard, newBoard => {
+        newBoard[row][col].isOpen = true;
+    });
 }

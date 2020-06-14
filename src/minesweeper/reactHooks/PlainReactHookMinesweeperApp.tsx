@@ -3,7 +3,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import produce from "immer";
 
-import {blankBoardData, initializedBoardData, isPlaying} from "../utils";
+import {blankBoardData, getNextGameState, isPlaying} from "../utils";
 import {BoardData, BoardDimension, CellCoordinates} from "../types";
 import GameConfigDialog from "./GameConfigDialog";
 import BoardComponent from "./BoardComponent";
@@ -84,27 +84,6 @@ function PlainReactHookMinesweeperApp() {
             }
         }))
     }
-}
-
-function getNextGameState(prevState: GameState, clicked: CellCoordinates): GameState {
-    return produce(prevState, newState => {
-        const boardData = prevState.isInitialized
-            ? prevState.boardData
-            : initializedBoardData({
-                oldBoard: prevState.boardData,
-                numBomb: prevState.config.numBomb,
-                clicked,
-            });
-
-        newState.boardData = getNextBoard(boardData, clicked)
-        newState.isInitialized = true;
-    });
-}
-
-function getNextBoard(prevBoard: BoardData, {row, col}: CellCoordinates): BoardData {
-    return produce(prevBoard, newBoard => {
-        newBoard[row][col].isOpen = true;
-    });
 }
 
 export default PlainReactHookMinesweeperApp;
