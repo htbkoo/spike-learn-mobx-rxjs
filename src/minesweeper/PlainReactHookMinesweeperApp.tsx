@@ -12,6 +12,7 @@ import {range} from "lodash";
 import produce from "immer";
 
 import {getBombsList, SimpleCoordinates} from "./utils";
+import {BoardData, BoardDimension, CellCoordinates, CellData} from "./types";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -45,24 +46,6 @@ const useStyles = makeStyles((theme: Theme) =>
         }
     }),
 );
-
-export interface CellCoordinates {
-    row: number;
-    col: number;
-}
-
-export interface CellData {
-    isOpen: boolean,
-    isBomb: boolean,
-    count: number,
-}
-
-export type BoardData = CellData[][];
-
-export interface BoardDimension {
-    width: number;
-    height: number;
-}
 
 export type GameConfig = BoardDimension & { numBomb: number; };
 

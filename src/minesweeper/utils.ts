@@ -1,5 +1,6 @@
-import {BoardDimension, CellCoordinates} from "./PlainReactHookMinesweeperApp";
 import {flatten, range, shuffle, take} from "lodash";
+
+import {BoardDimension, CellCoordinates} from "./types";
 
 export type SimpleCoordinates = [number, number,];
 export type SimpleCoordinatesList = SimpleCoordinates[];
