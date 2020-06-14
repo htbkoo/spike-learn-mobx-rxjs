@@ -130,3 +130,12 @@ export function getNextBoard(prevBoard: BoardData, {row, col}: CellCoordinates):
         newBoard[row][col].isOpen = true;
     });
 }
+
+export function createNewGameState(config: BoardDimension & { numBomb: number }) {
+    return {
+        status: GameStatus.PLAYING,
+        isInitialized: false,
+        boardData: blankBoardData(config),
+        config,
+    };
+}
