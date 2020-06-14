@@ -2,6 +2,7 @@ import {flatten, range, shuffle, take} from "lodash";
 import produce from "immer";
 
 import {BoardData, BoardDimension, CellCoordinates} from "./types";
+import {AppState, GameStatus} from "./reactHooks/PlainReactHookMinesweeperApp";
 
 export type SimpleCoordinates = [number, number,];
 export type SimpleCoordinatesList = SimpleCoordinates[];
@@ -103,4 +104,8 @@ function getDimension(boardData: BoardData): BoardDimension {
         width: firstRow.length,
         height: boardData.length
     }
+}
+
+export function isPlaying(state: AppState): boolean {
+    return !!state.game && GameStatus.PLAYING === state.game.status;
 }
