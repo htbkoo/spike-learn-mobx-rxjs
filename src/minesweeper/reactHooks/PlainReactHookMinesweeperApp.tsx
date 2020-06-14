@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
 import produce from "immer";
 
 import {blankBoardData, initializedBoardData} from "../utils";
