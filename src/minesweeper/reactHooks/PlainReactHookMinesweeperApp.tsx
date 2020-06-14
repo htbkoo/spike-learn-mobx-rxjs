@@ -8,11 +8,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {range} from "lodash";
 import produce from "immer";
 
-import {getBombsList, SimpleCoordinates} from "../utils";
-import {BoardData, BoardDimension, CellCoordinates, CellData} from "../types";
+import {blankBoardData, getBombsList, SimpleCoordinates} from "../utils";
+import {BoardData, BoardDimension, CellCoordinates} from "../types";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -179,16 +178,6 @@ function DialogTextField<T>({value, setValue, ...otherProps}: { value: T, setVal
             fullWidth
             {...otherProps}
         />
-    )
-}
-
-function blankBoardData({width, height}: BoardDimension): BoardData {
-    return range(height).map(_ =>
-        range(width).map(_ => ({
-            count: 0,
-            isBomb: false,
-            isOpen: false,
-        }))
     )
 }
 

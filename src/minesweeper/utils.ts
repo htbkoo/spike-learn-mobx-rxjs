@@ -1,6 +1,6 @@
 import {flatten, range, shuffle, take} from "lodash";
 
-import {BoardDimension, CellCoordinates} from "./types";
+import {BoardData, BoardDimension, CellCoordinates} from "./types";
 
 export type SimpleCoordinates = [number, number,];
 export type SimpleCoordinatesList = SimpleCoordinates[];
@@ -26,4 +26,14 @@ export function shuffleAndTakeList({candidates, takeCount}: { candidates: Simple
 export function getBombsList({dimension, clicked, takeCount}: { dimension: BoardDimension, clicked: CellCoordinates, takeCount: number }): SimpleCoordinatesList {
     const candidates = buildBombCandidatesList({dimension, clicked});
     return shuffleAndTakeList({candidates, takeCount});
+}
+
+export function blankBoardData({width, height}: BoardDimension): BoardData {
+    return range(height).map(_ =>
+        range(width).map(_ => ({
+            count: 0,
+            isBomb: false,
+            isOpen: false,
+        }))
+    )
 }
