@@ -75,11 +75,8 @@ export function initializedBoardData(
                 return [row + drow, col + dcol];
             }
 
-            function keepValidCoordinates([exactRow, exactCol]) {
-                const isRowValid = (exactRow >= 0) && (exactRow < dimension.height)
-                const isColValid = (exactCol >= 0) && (exactCol < dimension.width)
-
-                return isRowValid && isColValid;
+            function keepValidCoordinates(coordinates) {
+                return isCoordinatesValid({coordinates, dimension});
             }
 
             function addCount([exactRow, exactCol]) {
@@ -88,6 +85,16 @@ export function initializedBoardData(
         })
 
     })
+}
+
+export function isCoordinatesValid(
+    {coordinates: [exactRow, exactCol], dimension: {width, height}}:
+        { coordinates: SimpleCoordinates, dimension: BoardDimension }
+): boolean {
+    const isRowValid = (exactRow >= 0) && (exactRow < height)
+    const isColValid = (exactCol >= 0) && (exactCol < width)
+
+    return isRowValid && isColValid;
 }
 
 function getDimension(boardData: BoardData): BoardDimension {

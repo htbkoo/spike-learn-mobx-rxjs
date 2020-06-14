@@ -1,4 +1,10 @@
-import {buildBombCandidatesList, getBombsList, shuffleAndTakeList, SimpleCoordinatesList} from "./utils";
+import {
+    buildBombCandidatesList,
+    getBombsList,
+    isCoordinatesValid,
+    shuffleAndTakeList, SimpleCoordinates,
+    SimpleCoordinatesList
+} from "./utils";
 
 describe('utils', () => {
     describe('buildBombCandidatesList', () => {
@@ -57,5 +63,89 @@ describe('utils', () => {
             // then
             expect(list.length).toEqual(takeCount);
         });
+    });
+    describe('isCoordinatesValid', () => {
+        [
+            {
+                coordinates: coor(0, 0),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: true,
+            },
+            {
+                coordinates: coor(0, 1),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: true,
+            },
+            {
+                coordinates: coor(0, 2),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: true,
+            },
+            {
+                coordinates: coor(1, 1),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: true,
+            },
+            {
+                coordinates: coor(1, 2),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: true,
+            },
+            {
+                coordinates: coor(1, 3),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: true,
+            },
+
+            {
+                coordinates: coor(1, 4),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: false,
+            },
+            {
+                coordinates: coor(2, 3),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: false,
+            },
+
+            {
+                coordinates: coor(-1, 0),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: false,
+            },
+            {
+                coordinates: coor(0, -1),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: false,
+            },
+            {
+                coordinates: coor(-1, -1),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: false,
+            },
+            {
+                coordinates: coor(-2, 0),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: false,
+            },
+            {
+                coordinates: coor(0, -2),
+                dimension: {width: 4, height: 2},
+                expectedIsValid: false,
+            },
+        ].forEach(({coordinates, dimension, expectedIsValid}) =>
+            it(`should be ${expectedIsValid ? "valid" : "invalid"} for coordinates (${coordinates[0]}, ${coordinates[1]}) and dimension {height: ${dimension.height}, width: ${dimension.width}}`, () => {
+                // given
+                // when
+                const actual = isCoordinatesValid({coordinates, dimension,});
+
+                // then
+                expect(actual).toEqual(expectedIsValid);
+            })
+        );
+
+        function coor(row: number, col: number): SimpleCoordinates {
+            return [row, col];
+        }
     });
 });
