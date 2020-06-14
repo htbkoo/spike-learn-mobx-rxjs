@@ -90,7 +90,7 @@ function PlainReactHookMinesweeperApp() {
         setState(produce(state, newState => {
             newState.game = {
                 isPlaying: true,
-                boardData: newBoardData(config),
+                boardData: blankBoardData(config),
                 config,
             }
         }))
@@ -160,7 +160,7 @@ function DialogTextField<T>({value, setValue, ...otherProps}: { value: T, setVal
     )
 }
 
-function newBoardData({width, height}: BoardDimension): BoardData {
+function blankBoardData({width, height}: BoardDimension): BoardData {
     return range(height).map(_ =>
         range(width).map(_ =>
             ({
