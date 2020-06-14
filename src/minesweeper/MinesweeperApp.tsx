@@ -2,7 +2,7 @@ import React from "react";
 import {Route, Switch, useRouteMatch,} from "react-router-dom";
 
 import LinksMenuList from "../utils/LinksMenuList";
-import PlainReactHookMinesweeperApp from "./PlainReactHookMinesweeperApp";
+import PlainReactHookMinesweeperApp from "./reactHooks/PlainReactHookMinesweeperApp";
 
 const URL_PATHS = {
     REACT_HOOKS: "react-hooks"

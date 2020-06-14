@@ -11,8 +11,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {range} from "lodash";
 import produce from "immer";
 
-import {getBombsList, SimpleCoordinates} from "./utils";
-import {BoardData, BoardDimension, CellCoordinates, CellData} from "./types";
+import {getBombsList, SimpleCoordinates} from "../utils";
+import {BoardData, BoardDimension, CellCoordinates, CellData} from "../types";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
