@@ -11,7 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {range} from "lodash";
 import produce from "immer";
 
-import {getBombsList} from "./utils";
+import {getBombsList, SimpleCoordinates} from "./utils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -66,7 +66,7 @@ export interface BoardDimension {
 
 export type GameConfig = BoardDimension & { numBomb: number; };
 
-interface GameState {
+export interface GameState {
     config: GameConfig;
     isPlaying: boolean;
     isInitialized: boolean;
@@ -135,19 +135,6 @@ function PlainReactHookMinesweeperApp() {
         }
     }
 }
-
-/*
-setState({
-    game: produce(state.game, newGameState => {
-        if (state.game.isInitialized) {
-            getStateAfterClickCell();
-        } else {
-            getStateAfterInitializeBoard();
-        }
-    })
-})
-*/
-
 
 function GameConfigDialog({isOpen, onStartGame}: { isOpen: boolean, onStartGame: (config: GameConfig) => void }) {
     const [config, setConfig] = useState<GameConfig>({
@@ -224,6 +211,17 @@ function blankBoardData({width, height}: BoardDimension): BoardData {
     )
 }
 
+const EIGHT_WAYS_NEIGHBOURS: SimpleCoordinates[] = [
+    [-1, -1],
+    [-1, 0],
+    [-1, 1],
+    [0, -1],
+    [0, 1],
+    [1, -1],
+    [1, 0],
+    [1, 1],
+];
+
 function initializedBoardData(
     {oldBoard, clicked, numBomb}: { oldBoard: BoardData, clicked: CellCoordinates, numBomb: number }
 ): BoardData {
@@ -233,10 +231,34 @@ function initializedBoardData(
     const bombCandidates = getBombsList({takeCount: numBomb, dimension, clicked});
 
     return produce(oldBoard, newBoard => {
-        bombCandidates.forEach(([i, j]) => {
-            newBoard[i][j].isBomb = true;
-            // TODO: add count for neighbour cells
+        bombCandidates.forEach(([row, col]) => {
+            newBoard[row][col].isBomb = true;
+            addCountsToNeighbour();
+
+            // TODO: extract this to global function for testability
+            function addCountsToNeighbour() {
+                EIGHT_WAYS_NEIGHBOURS
+                    .map(toExactCoordinates)
+                    .filter(keepValidCoordinates)
+                    .forEach(addCount)
+            }
+
+            function toExactCoordinates([drow, dcol]): SimpleCoordinates {
+                return [row + drow, col + dcol];
+            }
+
+            function keepValidCoordinates([exactRow, exactCol]) {
+                const isRowValid = (exactRow >= 0) && (exactRow < dimension.height)
+                const isColValid = (exactCol >= 0) && (exactCol < dimension.width)
+
+                return isRowValid && isColValid;
+            }
+
+            function addCount([exactRow, exactCol]) {
+                newBoard[exactRow][exactCol].count++;
+            }
         })
+
     })
 }
 
@@ -267,7 +289,7 @@ function BoardComponent(
                                     variant="contained"
                                     color="default"
                                     className={classes.cellButton}
-                                    children={cellData.isBomb ? "B" : ""}
+                                    children={cellData.isBomb ? "B" : cellData.count !== 0 ? cellData.count : ""}
                                     disabled={cellData.isOpen || !isPlaying}
                                     onClick={() => handleClick({row, col})}
                                 />
