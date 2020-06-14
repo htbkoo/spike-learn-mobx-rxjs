@@ -48,9 +48,6 @@ interface CellData {
     isOpen: boolean,
     isBomb: boolean,
     count: number,
-
-    // TODO: maybe refactor this
-    handleClick: (row, col) => void,
 }
 
 type BoardData = CellData[][];
@@ -167,10 +164,6 @@ function blankBoardData({width, height}: BoardDimension): BoardData {
                 count: 0,
                 isBomb: false,
                 isOpen: false,
-                handleClick(row, col) {
-                    console.log(`${row}, ${col}`);
-                    this.isOpen = true;
-                }
             } as CellData)
         )
     )
@@ -195,7 +188,6 @@ function BoardComponent({data}: { data: BoardData }) {
                                     className={classes.cellButton}
                                     children=""
                                     disabled={cellData.isOpen}
-                                    onClick={() => cellData.handleClick(i, j)}
                                 />
                             </div>
                         ))
