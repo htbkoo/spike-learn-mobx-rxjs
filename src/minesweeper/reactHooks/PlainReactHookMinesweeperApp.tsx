@@ -74,23 +74,57 @@ function PlainReactHookMinesweeperApp() {
     function handleClick(coordinates: CellCoordinates) {
         setState(produce(state, newState => {
             if (state.game) {
+                newState.game = getNextGameState(state.game, coordinates);
                 if (!state.game.isInitialized) {
-                    // TODO: refactor - this is `initializeBoard`
-
-                    const game: GameState = newState.game as any;
-                    game.boardData = initializedBoardData({
-                        oldBoard: state.game.boardData,
-                        clicked: coordinates,
-                        numBomb: state.game.config.numBomb
-                    })
-                    game.isInitialized = true;
+                    newState.game = initializeGame(state.game, coordinates);
+                } else {
+                    // clickCell
                 }
 
                 // TODO: refactor - this is `clickCell`
-
             }
         }))
     }
+}
+
+function getNextGameState(prevState: GameState, clicked: CellCoordinates): GameState {
+    return produce(prevState, newState => {
+        const boardData = prevState.isInitialized
+            ? prevState.boardData
+            : initializedBoardData({
+                oldBoard: prevState.boardData,
+                numBomb: prevState.config.numBomb,
+                clicked,
+            });
+
+        newState.boardData = clickCell(boardData, clicked)
+        newState.isInitialized = true;
+    });
+
+    // if (!prevState.isInitialized) {
+    //     return initializeGame(prevState, clicked);
+    // } else {
+    //     return clickCell(prevState.boardData, clicked);
+    // }
+}
+
+function initializeGame(prevState: GameState, clicked: CellCoordinates) {
+    return produce(prevState, newGame => {
+        const boardData = initializedBoardData({
+            oldBoard: prevState.boardData,
+            numBomb: prevState.config.numBomb,
+            clicked,
+        });
+
+        newGame.boardData = clickCell(boardData, clicked)
+        newGame.isInitialized = true;
+    });
+}
+
+function clickCell(prevBoard: BoardData, {row, col}: CellCoordinates): BoardData {
+    return produce(prevBoard, newBoard => {
+        newBoard[row][col].isOpen = true;
+    });
 }
 
 export default PlainReactHookMinesweeperApp;
