@@ -55,7 +55,6 @@ export function initializedBoardData(
 ): BoardData {
     const dimension: BoardDimension = getDimension(oldBoard)
 
-    // TODO: refactor this -> probably create a convenient function that takes both
     const bombCandidates = getBombsList({takeCount: numBomb, dimension, clicked});
 
     return produce(oldBoard, newBoard => {
