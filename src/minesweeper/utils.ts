@@ -97,8 +97,10 @@ export function isCoordinatesValid(
 }
 
 function getDimension(boardData: BoardData): BoardDimension {
+    // TODO: add validation when `boardData` is empty
+    const firstRow = boardData[0];
     return {
-        width: boardData[0].length,
+        width: firstRow.length,
         height: boardData.length
     }
 }
