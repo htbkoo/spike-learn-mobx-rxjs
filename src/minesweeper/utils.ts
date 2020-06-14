@@ -40,14 +40,18 @@ export function blankBoardData({width, height}: BoardDimension): BoardData {
     )
 }
 
-const EIGHT_WAYS_NEIGHBOURS: SimpleCoordinates[] = [
-    [-1, -1],
+const FOUR_WAYS_NEIGHBOURS: SimpleCoordinatesList = [
     [-1, 0],
-    [-1, 1],
     [0, -1],
     [0, 1],
-    [1, -1],
     [1, 0],
+];
+
+const EIGHT_WAYS_NEIGHBOURS: SimpleCoordinatesList = [
+    ...FOUR_WAYS_NEIGHBOURS,
+    [-1, -1],
+    [-1, 1],
+    [1, -1],
     [1, 1],
 ];
 
@@ -65,18 +69,8 @@ export function initializedBoardData(
 
             // TODO: extract this to global function for testability
             function addCountsToNeighbour() {
-                EIGHT_WAYS_NEIGHBOURS
-                    .map(toExactCoordinates)
-                    .filter(keepValidCoordinates)
+                findValidNeighbours(EIGHT_WAYS_NEIGHBOURS, [row, col], dimension)
                     .forEach(addCount)
-            }
-
-            function toExactCoordinates([drow, dcol]): SimpleCoordinates {
-                return [row + drow, col + dcol];
-            }
-
-            function keepValidCoordinates(coordinates) {
-                return isCoordinatesValid({coordinates, dimension});
             }
 
             function addCount([exactRow, exactCol]) {
@@ -85,6 +79,20 @@ export function initializedBoardData(
         })
 
     })
+}
+
+function findValidNeighbours(directions: SimpleCoordinatesList, [row, col]: SimpleCoordinates, dimension: BoardDimension): SimpleCoordinatesList {
+    return directions
+        .map(toExactCoordinates)
+        .filter(keepValidCoordinates);
+
+    function toExactCoordinates([drow, dcol]): SimpleCoordinates {
+        return [row + drow, col + dcol];
+    }
+
+    function keepValidCoordinates(coordinates) {
+        return isCoordinatesValid({coordinates, dimension});
+    }
 }
 
 export function isCoordinatesValid(
@@ -127,11 +135,38 @@ export function getNextGameState(prevState: GameState, clicked: CellCoordinates)
 }
 
 export function getNextBoard(board: BoardData, {row, col}: CellCoordinates): BoardData {
-    return produce(board, newBoard => {
-        newBoard[row][col].isOpen = true;
+    const dimension = getDimension(board);
+    const visited: boolean[][] = range(dimension.height).map(_ => range(dimension.width).map(_ => false));
+    const queue: SimpleCoordinatesList = [[row, col]];
 
-        // TODO: flood to open neighbours as well
+    return produce(board, newBoard => {
+        while (queue.length > 0) {
+            const top: SimpleCoordinates = queue.shift() as any;
+            const origin = newBoard[top[0]][top[1]];
+            if (!origin.isBomb) {
+                origin.isOpen = true;
+            }
+
+            findValidNeighbours(FOUR_WAYS_NEIGHBOURS, top, dimension)
+                .filter(keepUnvisited)
+                .filter(keepIfShouldVisit)
+                .forEach(addToQueue)
+        }
     });
+
+    function keepUnvisited([row, col]) {
+        return !visited[row][col];
+    }
+
+    function keepIfShouldVisit([row, col]) {
+        const current = board[row][col];
+        return !current.isBomb && current.count === 0;
+    }
+
+    function addToQueue([row, col]) {
+        visited[row][col] = true;
+        queue.push([row, col]);
+    }
 }
 
 export function countNumCellsOpened(board: BoardData) {
