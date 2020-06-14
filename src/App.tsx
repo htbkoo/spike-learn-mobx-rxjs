@@ -25,19 +25,25 @@ interface AppConfiguration {
 }
 
 const APP_CONFIGURATIONS: AppConfiguration[] = [
-    {path: "/", linkText: "Home", appComponent: (<h3>Please select an app.</h3>), isPathExact: true},
+    {
+        path: "/",
+        linkText: "Home",
+        appComponent: (<h3>Please select an app.</h3>),
+        isPathExact: true,
+        title: "spike-learn-mobx-rxjs"
+    },
     {
         path: "/todo-app",
         linkText: "TodoApp",
         appComponent: (<TodoListApp />),
         subSectionMenu: (<TodoListAppMenu />),
-        title: ": TODO APP"
+        title: "TODO APP"
     },
     {
         path: "/minesweeper-app",
         linkText: "MinesweeperApp",
         appComponent: (<MinesweeperApp />),
-        title: ": MINESWEEPER APP"
+        title: "MINESWEEPER APP"
     },
 ]
 
@@ -48,7 +54,7 @@ const App: React.FC = () => {
     return (
         <div className={classes.appContainer}>
             <ClippedResponsiveDrawer
-                title={`spike-learn-mobx-rxjs ${getTitle(match.url)}`}
+                title={`${getTitle(match.url)}`}
                 drawerContent={<AppNavigationBar items={APP_CONFIGURATIONS.map(toNavigationItem)} />}
             >
                 {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
