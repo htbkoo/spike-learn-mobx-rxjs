@@ -7,7 +7,7 @@ import {TodoListApp, TodoListAppMenu} from "./todo/TodoListApp";
 import ClippedResponsiveDrawer from "./ClippedResponsiveDrawer";
 import AppNavigationBar, {AppNavigationBarProps} from "./AppNavigationBar";
 import {ListItemLinkProps} from "./utils/StyledRouterLink";
-import {MinesweeperApp} from "./minesweeper/MinesweeperApp";
+import {MinesweeperApp, MinesweeperAppMenu} from "./minesweeper/MinesweeperApp";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -43,6 +43,7 @@ const APP_CONFIGURATIONS: AppConfiguration[] = [
         path: "/minesweeper-app",
         linkText: "MinesweeperApp",
         appComponent: (<MinesweeperApp />),
+        subSectionMenu: (<MinesweeperAppMenu />),
         title: "MINESWEEPER APP"
     },
 ]
