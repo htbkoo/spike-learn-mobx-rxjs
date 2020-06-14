@@ -1,4 +1,4 @@
-import {flatten, range, shuffle, take} from "lodash";
+import {flatten, range, shuffle, sumBy, take} from "lodash";
 import produce from "immer";
 
 import {BoardData, BoardDimension, CellCoordinates} from "./types";
@@ -129,6 +129,10 @@ export function getNextBoard(prevBoard: BoardData, {row, col}: CellCoordinates):
     return produce(prevBoard, newBoard => {
         newBoard[row][col].isOpen = true;
     });
+}
+
+export function countNumCellsOpened(board: BoardData) {
+    return sumBy(board, rowData => sumBy(rowData, c => c.isOpen ? 1 : 0));
 }
 
 export function createNewGameState(config: BoardDimension & { numBomb: number }) {
