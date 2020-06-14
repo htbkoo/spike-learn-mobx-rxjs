@@ -96,12 +96,12 @@ function getNextGameState(prevState: GameState, clicked: CellCoordinates): GameS
                 clicked,
             });
 
-        newState.boardData = clickCell(boardData, clicked)
+        newState.boardData = getNextBoard(boardData, clicked)
         newState.isInitialized = true;
     });
 }
 
-function clickCell(prevBoard: BoardData, {row, col}: CellCoordinates): BoardData {
+function getNextBoard(prevBoard: BoardData, {row, col}: CellCoordinates): BoardData {
     return produce(prevBoard, newBoard => {
         newBoard[row][col].isOpen = true;
     });
