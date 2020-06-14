@@ -75,13 +75,6 @@ function PlainReactHookMinesweeperApp() {
         setState(produce(state, newState => {
             if (state.game) {
                 newState.game = getNextGameState(state.game, coordinates);
-                if (!state.game.isInitialized) {
-                    newState.game = initializeGame(state.game, coordinates);
-                } else {
-                    // clickCell
-                }
-
-                // TODO: refactor - this is `clickCell`
             }
         }))
     }
@@ -99,25 +92,6 @@ function getNextGameState(prevState: GameState, clicked: CellCoordinates): GameS
 
         newState.boardData = clickCell(boardData, clicked)
         newState.isInitialized = true;
-    });
-
-    // if (!prevState.isInitialized) {
-    //     return initializeGame(prevState, clicked);
-    // } else {
-    //     return clickCell(prevState.boardData, clicked);
-    // }
-}
-
-function initializeGame(prevState: GameState, clicked: CellCoordinates) {
-    return produce(prevState, newGame => {
-        const boardData = initializedBoardData({
-            oldBoard: prevState.boardData,
-            numBomb: prevState.config.numBomb,
-            clicked,
-        });
-
-        newGame.boardData = clickCell(boardData, clicked)
-        newGame.isInitialized = true;
     });
 }
 
