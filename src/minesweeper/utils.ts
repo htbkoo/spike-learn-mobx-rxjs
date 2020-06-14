@@ -157,7 +157,6 @@ export function getNextBoard(board: BoardData, {row, col}: CellCoordinates): Boa
                         findValidNeighbours(FOUR_WAYS_NEIGHBOURS, top, dimension)
                             .filter(keepIfNotOpened)
                             .filter(keepUnvisited)
-                            // .filter(keepIfShouldVisit)
                             .forEach(addToQueue)
                     }
                 }
@@ -171,17 +170,11 @@ export function getNextBoard(board: BoardData, {row, col}: CellCoordinates): Boa
                 return !visited[row][col];
             }
 
-            function keepIfShouldVisit([row, col]) {
-                const current = board[row][col];
-                return !current.isBomb && current.count === 0;
-            }
-
             function addToQueue([row, col]) {
                 visited[row][col] = true;
                 queue.push([row, col]);
             }
         }
-
     });
 }
 
