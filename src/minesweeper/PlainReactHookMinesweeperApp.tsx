@@ -11,6 +11,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {range} from "lodash";
 import produce from "immer";
 
+import {getBombsList} from "./utils";
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         table: {
@@ -44,27 +46,35 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface CellData {
+export interface CellCoordinates {
+    row: number;
+    col: number;
+}
+
+export interface CellData {
     isOpen: boolean,
     isBomb: boolean,
     count: number,
 }
 
-type BoardData = CellData[][];
+export type BoardData = CellData[][];
 
-interface BoardDimension {
+export interface BoardDimension {
     width: number;
     height: number;
 }
 
-type GameConfig = BoardDimension & { numBomb: number; };
+export type GameConfig = BoardDimension & { numBomb: number; };
 
-interface AppState {
-    game?: {
-        config: GameConfig;
-        isPlaying: true;
-        boardData: BoardData;
-    }
+interface GameState {
+    config: GameConfig;
+    isPlaying: boolean;
+    isInitialized: boolean;
+    boardData: BoardData;
+}
+
+export interface AppState {
+    game?: GameState
 }
 
 function PlainReactHookMinesweeperApp() {
@@ -76,7 +86,13 @@ function PlainReactHookMinesweeperApp() {
         <div className={classes.gameAppContainer}>
             {
                 state.game
-                    ? (<BoardComponent data={state.game.boardData} />)
+                    ? (
+                        <BoardComponent
+                            data={state.game.boardData}
+                            isPlaying={state.game.isPlaying}
+                            handleClick={handleClick}
+                        />
+                    )
                     : ""
             }
             <GameConfigDialog isOpen={!state.game} onStartGame={startGame} />
@@ -87,17 +103,56 @@ function PlainReactHookMinesweeperApp() {
         setState(produce(state, newState => {
             newState.game = {
                 isPlaying: true,
+                isInitialized: false,
                 boardData: blankBoardData(config),
                 config,
             }
         }))
     }
+
+    function handleClick(coordinates: CellCoordinates) {
+        setState(produce(state, newState => {
+            if (state.game) {
+                if (!state.game.isInitialized) {
+                    // TODO: refactor - this is `initializeBoard`
+
+                    const game: GameState = newState.game as any;
+                    game.boardData = initializedBoardData({
+                        oldBoard: state.game.boardData,
+                        clicked: coordinates,
+                        numBomb: state.game.config.numBomb
+                    })
+                    game.isInitialized = true;
+                }
+
+                // TODO: refactor - this is `clickCell`
+
+            }
+        }))
+
+        function clickCell() {
+
+        }
+    }
 }
+
+/*
+setState({
+    game: produce(state.game, newGameState => {
+        if (state.game.isInitialized) {
+            getStateAfterClickCell();
+        } else {
+            getStateAfterInitializeBoard();
+        }
+    })
+})
+*/
+
 
 function GameConfigDialog({isOpen, onStartGame}: { isOpen: boolean, onStartGame: (config: GameConfig) => void }) {
     const [config, setConfig] = useState<GameConfig>({
-        width: 8,
-        height: 6,
+        width: 10,
+        height: 8,
         numBomb: 10,
     })
 
@@ -169,25 +224,52 @@ function blankBoardData({width, height}: BoardDimension): BoardData {
     )
 }
 
-function BoardComponent({data}: { data: BoardData }) {
+function initializedBoardData(
+    {oldBoard, clicked, numBomb}: { oldBoard: BoardData, clicked: CellCoordinates, numBomb: number }
+): BoardData {
+    const dimension: BoardDimension = getDimension(oldBoard)
+
+    // TODO: refactor this -> probably create a convenient function that takes both
+    const bombCandidates = getBombsList({takeCount: numBomb, dimension, clicked});
+
+    return produce(oldBoard, newBoard => {
+        bombCandidates.forEach(([i, j]) => {
+            newBoard[i][j].isBomb = true;
+            // TODO: add count for neighbour cells
+        })
+    })
+}
+
+function getDimension(boardData: BoardData): BoardDimension {
+    return {
+        width: boardData[0].length,
+        height: boardData.length
+    }
+}
+
+function BoardComponent(
+    {data, isPlaying, handleClick}:
+        { data: BoardData, isPlaying: boolean, handleClick: (coor: CellCoordinates) => void }
+) {
     const classes = useStyles();
 
     return (
         <div className={classes.boardContainer}>
-            {data.map((row, i) => (
-                <div key={`row_${i}`}>
+            {data.map((rowData, row) => (
+                <div key={`row_${row}`}>
                     {
-                        row.map((cellData, j) => (
+                        rowData.map((cellData, col) => (
                             <div
-                                key={`cell_${i * row.length + j}`}
+                                key={`cell_${row * rowData.length + col}`}
                                 className={classes.cellButtonContainer}
                             >
                                 <Button
                                     variant="contained"
                                     color="default"
                                     className={classes.cellButton}
-                                    children=""
-                                    disabled={cellData.isOpen}
+                                    children={cellData.isBomb ? "B" : ""}
+                                    disabled={cellData.isOpen || !isPlaying}
+                                    onClick={() => handleClick({row, col})}
                                 />
                             </div>
                         ))
