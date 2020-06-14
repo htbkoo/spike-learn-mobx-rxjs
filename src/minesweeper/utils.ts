@@ -2,7 +2,7 @@ import {flatten, range, shuffle, sumBy, take} from "lodash";
 import produce from "immer";
 
 import {BoardData, BoardDimension, CellCoordinates} from "./types";
-import {AppState, GameState, GameStatus} from "./reactHooks/PlainReactHookMinesweeperApp";
+import {AppState, GameConfig, GameState, GameStatus} from "./reactHooks/PlainReactHookMinesweeperApp";
 
 export type SimpleCoordinates = [number, number,];
 export type SimpleCoordinatesList = SimpleCoordinates[];
@@ -120,19 +120,44 @@ export function getNextGameState(prevState: GameState, clicked: CellCoordinates)
                 clicked,
             });
 
-        newState.boardData = getNextBoard(boardData, clicked)
         newState.isInitialized = true;
+        newState.boardData = getNextBoard(boardData, clicked);
+        newState.status = getNextStatus(newState.boardData, clicked, prevState.config);
     });
 }
 
-export function getNextBoard(prevBoard: BoardData, {row, col}: CellCoordinates): BoardData {
-    return produce(prevBoard, newBoard => {
+export function getNextBoard(board: BoardData, {row, col}: CellCoordinates): BoardData {
+    return produce(board, newBoard => {
         newBoard[row][col].isOpen = true;
+
+        // TODO: flood to open neighbours as well
     });
 }
 
 export function countNumCellsOpened(board: BoardData) {
     return sumBy(board, rowData => sumBy(rowData, c => c.isOpen ? 1 : 0));
+}
+
+export function getNextStatus(board: BoardData, {row, col}: CellCoordinates, {width, height, numBomb}: GameConfig): GameStatus {
+    if (winAfterClick()) {
+        return GameStatus.WIN;
+    } else if (loseAfterClick()) {
+        return GameStatus.LOSE;
+    } else {
+        return GameStatus.PLAYING;
+    }
+
+    function winAfterClick() {
+        const totalNumCells = width * height;
+        const numCellsToOpen = totalNumCells - numBomb
+        // TODO: performance
+        const numCellsOpened = countNumCellsOpened(board);
+        return numCellsOpened === numCellsToOpen;
+    }
+
+    function loseAfterClick() {
+        return board[row][col].isBomb;
+    }
 }
 
 export function createNewGameState(config: BoardDimension & { numBomb: number }) {
