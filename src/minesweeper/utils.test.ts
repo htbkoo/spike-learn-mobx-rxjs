@@ -1,10 +1,13 @@
 import {
     buildBombCandidatesList,
+    countNumCellsOpened,
     getBombsList,
     isCoordinatesValid,
-    shuffleAndTakeList, SimpleCoordinates,
+    shuffleAndTakeList,
+    SimpleCoordinates,
     SimpleCoordinatesList
 } from "./utils";
+import {BoardData, CellData} from "./types";
 
 describe('utils', () => {
     describe('buildBombCandidatesList', () => {
@@ -146,6 +149,29 @@ describe('utils', () => {
 
         function coor(row: number, col: number): SimpleCoordinates {
             return [row, col];
+        }
+    });
+
+    describe('countNumCellsOpened', () => {
+        it('should count number of cells that are opened in the board', () => {
+            // given
+            const board: BoardData = [
+                [c(true), c(true), c(false), c(true), c(true),],
+                [c(true), c(false), c(false), c(false), c(false),],
+                [c(false), c(false), c(true), c(false), c(true),],
+            ]
+
+            // when
+            const count = countNumCellsOpened(board);
+
+            // then
+            const numCellsOpened = 7;
+            expect(count).toEqual(numCellsOpened)
+        });
+
+        // Fake cell
+        function c(isOpen): CellData {
+            return {isOpen} as any;
         }
     });
 });
