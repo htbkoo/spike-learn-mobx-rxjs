@@ -135,9 +135,14 @@ function GameConfigDialog({isOpen, onStartGame}: { isOpen: boolean, onStartGame:
     )
 
     function setFormField(field: keyof GameConfig) {
-        return value => setConfig(produce(newConfig => {
+        return value => setConfig(produce(config,newConfig => {
             newConfig[field] = value
         }));
+
+        // This also works and is slightly cleaner, but we would lose the type for `newConfig`
+        // return value => setConfig(produce(newConfig => {
+        //     newConfig[field] = value
+        // }));
     }
 }
 
