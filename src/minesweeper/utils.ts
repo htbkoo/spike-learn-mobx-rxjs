@@ -7,6 +7,21 @@ import {AppState, GameConfig, GameState, GameStatus} from "./reactHooks/PlainRea
 export type SimpleCoordinates = [number, number,];
 export type SimpleCoordinatesList = SimpleCoordinates[];
 
+const FOUR_WAYS_NEIGHBOURS: SimpleCoordinatesList = [
+    [-1, 0],
+    [0, -1],
+    [0, 1],
+    [1, 0],
+];
+
+const EIGHT_WAYS_NEIGHBOURS: SimpleCoordinatesList = [
+    ...FOUR_WAYS_NEIGHBOURS,
+    [-1, -1],
+    [-1, 1],
+    [1, -1],
+    [1, 1],
+];
+
 export function buildBombCandidatesList(
     {dimension: {width, height}, clicked: {row, col}}: { dimension: BoardDimension, clicked: CellCoordinates }
 ): SimpleCoordinatesList { // TODO: think clearly about return type
@@ -39,21 +54,6 @@ export function blankBoardData({width, height}: BoardDimension): BoardData {
         }))
     )
 }
-
-const FOUR_WAYS_NEIGHBOURS: SimpleCoordinatesList = [
-    [-1, 0],
-    [0, -1],
-    [0, 1],
-    [1, 0],
-];
-
-const EIGHT_WAYS_NEIGHBOURS: SimpleCoordinatesList = [
-    ...FOUR_WAYS_NEIGHBOURS,
-    [-1, -1],
-    [-1, 1],
-    [1, -1],
-    [1, 1],
-];
 
 export function initializedBoardData(
     {oldBoard, clicked, numBomb}: { oldBoard: BoardData, clicked: CellCoordinates, numBomb: number }
