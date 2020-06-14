@@ -3,14 +3,14 @@ import {Route, Switch} from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
-import {TodoListAppMenu} from "./todo/TodoApp";
+
 import LinksMenuList from "./utils/LinksMenuList";
 import {ListItemLinkProps} from "./utils/StyledRouterLink";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         subSection: {
-            "paddingLeft": "10%",
+            color: theme.palette.primary.light
         },
         drawerContainer: {
             overflow: 'auto',
@@ -18,12 +18,11 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const URL_PATHS = {
-    HOME: "/",
-    TODO_APP: "/todo-app"
-}
+export type AppNavigationBarProps = ListItemLinkProps & {
+    subSectionMenu?: React.ReactNode;
+};
 
-export default function AppNavigationBar({items}: { items: ListItemLinkProps[] }) {
+export default function AppNavigationBar({items}: { items: AppNavigationBarProps[] }) {
     const classes = useStyles();
 
     return (
@@ -35,12 +34,7 @@ export default function AppNavigationBar({items}: { items: ListItemLinkProps[] }
 
                 <div className={classes.subSection}>
                     <Switch>
-                        <Route exact path={URL_PATHS.HOME}>
-                            <div />
-                        </Route>
-                        <Route path={URL_PATHS.TODO_APP}>
-                            <TodoListAppMenu />
-                        </Route>
+                        {items.map(toSubSectionMenu)}
                         <Route path="*">
                             <div />
                         </Route>
@@ -49,4 +43,16 @@ export default function AppNavigationBar({items}: { items: ListItemLinkProps[] }
             </nav>
         </div>
     )
+}
+
+function toSubSectionMenu({to, subSectionMenu}: AppNavigationBarProps) {
+    if (subSectionMenu) {
+        return (
+            <Route path={to} key={to}>
+                {subSectionMenu}
+            </Route>
+        );
+    } else {
+        return "";
+    }
 }
