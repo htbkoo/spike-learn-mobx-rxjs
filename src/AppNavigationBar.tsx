@@ -35,9 +35,6 @@ export default function AppNavigationBar({items}: { items: ListItemLinkProps[] }
 
                 <div className={classes.subSection}>
                     <Switch>
-                        <Route exact path={URL_PATHS.HOME}>
-                            <div />
-                        </Route>
                         <Route path={URL_PATHS.TODO_APP}>
                             <TodoListAppMenu />
                         </Route>
