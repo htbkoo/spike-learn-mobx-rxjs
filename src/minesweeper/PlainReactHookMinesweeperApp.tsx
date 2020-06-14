@@ -16,11 +16,20 @@ const useStyles = makeStyles((theme: Theme) =>
             minWidth: 650,
         },
         gameAppContainer: {
+            "minHeight": "85vh",
+            "display": "flex",
+            "padding": theme.spacing(8),
+            "minWidth": "100%",
+            "justifyContent": "center",
+            "alignItems": "center",
+            "width": "max-content",
+            "height": "max-content",
+            backgroundColor: theme.palette.background.paper,
         },
         boardContainer: {
             display: "block",
             width: "max-content",
-            padding: theme.spacing(4),
+            // padding: theme.spacing(4),
         },
         cellButtonContainer: {
             margin: theme.spacing(0.25),
@@ -34,64 +43,57 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-
-function createData(name, calories, fat, carbs, protein) {
-    return {name, calories, fat, carbs, protein};
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
 function PlainReactHookMinesweeperApp() {
     const classes = useStyles();
 
-    const width = 18;
-    const height = 5;
+    const width = 8;
+    const height = 6;
     const numBomb = 10;
+
+    const boardData: BoardData = range(height).map(_ =>
+        range(width).map(_ =>
+            ({
+                count: 0,
+                isBomb: false,
+                isOpen: false,
+            })
+        )
+    )
 
     return (
         <div className={classes.gameAppContainer}>
-            <div className={classes.boardContainer}>
-                {range(height).map(i => (
-                    <div key={`row_${i}`}>
-                        {
-                            range(width).map(j => (
-                                <div key={`cell_${i * width + j}`} className={classes.cellButtonContainer}>
-                                    <Button variant="contained" color="default" className={classes.cellButton}
-                                            children="" />
-                                </div>
-                            ))
-                        }
-                    </div>
-                ))}
-            </div>
+            <BoardComponent data={boardData} />
         </div>
     );
 
 }
 
-function TableExample() {
+interface CellData {
+    isOpen: boolean,
+    isBomb: boolean,
+    count: number,
+}
+
+type BoardData = CellData[][];
+
+function BoardComponent({data}: { data: BoardData }) {
+    const classes = useStyles();
+
     return (
-        <TableContainer component={Paper}>
-            <Table size="small" aria-label="a dense table">
-                <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.name}>
-                            <TableCell><Button variant="contained" color="primary" /></TableCell>
-                            <TableCell>{row.calories}</TableCell>
-                            <TableCell>{row.calories}</TableCell>
-                            <TableCell>{row.calories}</TableCell>
-                            <TableCell>{row.calories}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <div className={classes.boardContainer}>
+            {data.map((row, i) => (
+                <div key={`row_${i}`}>
+                    {
+                        row.map((cellData, j) => (
+                            <div key={`cell_${i * row.length + j}`} className={classes.cellButtonContainer}>
+                                <Button variant="contained" color="default" className={classes.cellButton}
+                                        children="" />
+                            </div>
+                        ))
+                    }
+                </div>
+            ))}
+        </div>
     )
 }
 
