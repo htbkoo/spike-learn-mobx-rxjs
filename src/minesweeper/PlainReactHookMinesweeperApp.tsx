@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
             "alignItems": "center",
             "width": "max-content",
             "height": "max-content",
+            borderRadius: theme.spacing(1),
             backgroundColor: theme.palette.background.paper,
         },
         boardContainer: {
