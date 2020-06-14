@@ -3,10 +3,11 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import {Route, Switch, useRouteMatch} from "react-router-dom";
 
-import {TodoListApp} from "./todo/TodoListApp";
+import {TodoListApp, TodoListAppMenu} from "./todo/TodoListApp";
 import ClippedResponsiveDrawer from "./ClippedResponsiveDrawer";
-import AppNavigationBar from "./AppNavigationBar";
+import AppNavigationBar, {AppNavigationBarProps} from "./AppNavigationBar";
 import {ListItemLinkProps} from "./utils/StyledRouterLink";
+import {MinesweeperApp} from "./minesweeper/MinesweeperApp";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -18,13 +19,26 @@ interface AppConfiguration {
     path: ListItemLinkProps['to'];
     linkText: ListItemLinkProps['primary'];
     appComponent: React.ReactNode;
+    subSectionMenu?: AppNavigationBarProps['subSectionMenu'];
     title?: string;
     isPathExact?: boolean;
 }
 
 const APP_CONFIGURATIONS: AppConfiguration[] = [
     {path: "/", linkText: "Home", appComponent: (<h3>Please select an app.</h3>), isPathExact: true},
-    {path: "/todo-app", linkText: "TodoApp", appComponent: (<TodoListApp />), title: ": TODO APP"}
+    {
+        path: "/todo-app",
+        linkText: "TodoApp",
+        appComponent: (<TodoListApp />),
+        subSectionMenu: (<TodoListAppMenu />),
+        title: ": TODO APP"
+    },
+    {
+        path: "/minesweeper-app",
+        linkText: "MinesweeperApp",
+        appComponent: (<MinesweeperApp />),
+        title: ": MINESWEEPER APP"
+    },
 ]
 
 const App: React.FC = () => {
@@ -49,10 +63,11 @@ const App: React.FC = () => {
     );
 };
 
-function toNavigationItem({path, linkText,}: AppConfiguration): ListItemLinkProps {
+function toNavigationItem({path, linkText, subSectionMenu}: AppConfiguration): AppNavigationBarProps {
     return {
         to: path,
         primary: linkText,
+        subSectionMenu
     };
 }
 
