@@ -3,7 +3,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
-import {BoardData, CellCoordinates} from "../types";
+import {BoardData, CellCoordinates, CellData} from "../types";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -43,7 +43,7 @@ function BoardComponent(
                                     variant="contained"
                                     color="default"
                                     className={classes.cellButton}
-                                    children={cellData.isBomb ? "B" : cellData.count !== 0 ? cellData.count : ""}
+                                    children={getButtonText(cellData)}
                                     disabled={cellData.isOpen || !isPlaying}
                                     onClick={() => handleClick({row, col})}
                                 />
@@ -54,6 +54,14 @@ function BoardComponent(
             ))}
         </div>
     )
+}
+
+function getButtonText({isOpen, isBomb, count}: CellData): React.ReactNode {
+    if (isOpen) {
+        return isBomb ? "B" : count !== 0 ? count : "";
+    } else {
+        return "";
+    }
 }
 
 export default BoardComponent;
