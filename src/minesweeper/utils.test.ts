@@ -1,4 +1,4 @@
-import {buildBombCandidatesList, getBombsList} from "./utils";
+import {buildBombCandidatesList, getBombsList, shuffleAndTakeList} from "./utils";
 
 describe('utils', () => {
     describe('buildBombCandidatesList', () => {
@@ -22,7 +22,7 @@ describe('utils', () => {
         });
     });
 
-    describe('getBombsList', () => {
+    describe('shuffleAndTakeList', () => {
         it('should get list of bombs', () => {
             // given
             const candidates = [
@@ -37,7 +37,22 @@ describe('utils', () => {
             const takeCount = 3;
 
             // when
-            const list = getBombsList({candidates, takeCount});
+            const list = shuffleAndTakeList({candidates, takeCount});
+
+            // then
+            expect(list.length).toEqual(takeCount);
+        });
+    });
+
+    describe('getBombsList', () => {
+        it('should get list of bombs', () => {
+            // given
+            const dimension = {width: 4, height: 2};
+            const clicked = {row: 0, col: 2};
+            const takeCount = 3;
+
+            // when
+            const list = getBombsList({dimension, clicked, takeCount});
 
             // then
             expect(list.length).toEqual(takeCount);
