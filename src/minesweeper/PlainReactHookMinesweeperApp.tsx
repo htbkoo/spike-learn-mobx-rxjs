@@ -119,7 +119,7 @@ function GameConfigDialog({isOpen, onStartGame}: { isOpen: boolean, onStartGame:
                             <DialogTextField
                                 key={field}
                                 id={field}
-                                label={field}
+                                label={field} // TODO: add string capitalize
                                 value={config[field]}
                                 setValue={setFormField(field as any)}
                             />
@@ -135,9 +135,6 @@ function GameConfigDialog({isOpen, onStartGame}: { isOpen: boolean, onStartGame:
     )
 
     function setFormField(field: keyof GameConfig) {
-        // return value => setConfig(produce(config, newConfig => {
-        //     newConfig[field] = value
-        // }));
         return value => setConfig(produce(newConfig => {
             newConfig[field] = value
         }));
