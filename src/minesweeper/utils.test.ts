@@ -1,4 +1,4 @@
-import {buildBombCandidatesList, getBombsList, shuffleAndTakeList} from "./utils";
+import {buildBombCandidatesList, getBombsList, shuffleAndTakeList, SimpleCoordinatesList} from "./utils";
 
 describe('utils', () => {
     describe('buildBombCandidatesList', () => {
@@ -25,7 +25,7 @@ describe('utils', () => {
     describe('shuffleAndTakeList', () => {
         it('should get list of bombs', () => {
             // given
-            const candidates = [
+            const candidates: SimpleCoordinatesList = [
                 [0, 0],
                 [0, 1],
                 [0, 3],
@@ -33,7 +33,7 @@ describe('utils', () => {
                 [1, 1],
                 [1, 2],
                 [1, 3],
-            ]
+            ];
             const takeCount = 3;
 
             // when
