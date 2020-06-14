@@ -135,53 +135,54 @@ export function getNextGameState(prevState: GameState, clicked: CellCoordinates)
 }
 
 export function getNextBoard(board: BoardData, {row, col}: CellCoordinates): BoardData {
-    const dimension = getDimension(board);
-    const visited: boolean[][] = range(dimension.height).map(_ => range(dimension.width).map(_ => false));
-    const queue: SimpleCoordinatesList = [[row, col]];
-
     return produce(board, newBoard => {
         const clickedCell = newBoard[row][col];
         clickedCell.isOpen = true;
-
         if (!clickedCell.isBomb) {
+            flood()
+        }
+
+        function flood() {
+            const dimension = getDimension(board);
+            const visited: boolean[][] = range(dimension.height).map(_ => range(dimension.width).map(_ => false));
+            const queue: SimpleCoordinatesList = findValidNeighbours(FOUR_WAYS_NEIGHBOURS, [row, col], dimension);
+
             while (queue.length > 0) {
                 const top: SimpleCoordinates = queue.shift() as any;
                 const origin = newBoard[top[0]][top[1]];
                 if (!origin.isBomb) {
                     origin.isOpen = true;
+
+                    if (origin.count === 0) {
+                        findValidNeighbours(FOUR_WAYS_NEIGHBOURS, top, dimension)
+                            .filter(keepIfNotOpened)
+                            .filter(keepUnvisited)
+                            // .filter(keepIfShouldVisit)
+                            .forEach(addToQueue)
+                    }
                 }
+            }
 
-                findValidNeighbours(FOUR_WAYS_NEIGHBOURS, top, dimension)
-                    .filter(keepIfNotOpened)
-                    .filter(keepUnvisited)
-                    .filter(keepIfShouldVisit)
-                    .forEach(addToQueue)
+            function keepIfNotOpened([row, col]) {
+                return !newBoard[row][col].isOpen;
+            }
+
+            function keepUnvisited([row, col]) {
+                return !visited[row][col];
+            }
+
+            function keepIfShouldVisit([row, col]) {
+                const current = board[row][col];
+                return !current.isBomb && current.count === 0;
+            }
+
+            function addToQueue([row, col]) {
+                visited[row][col] = true;
+                queue.push([row, col]);
             }
         }
 
-        function keepIfNotOpened([row, col]) {
-            return !newBoard[row][col].isOpen;
-        }
-
-        function keepUnvisited([row, col]) {
-            return !visited[row][col];
-        }
-
-        function keepIfShouldVisit([row, col]) {
-            if (!newBoard[row][col].isBomb) {
-                newBoard[row][col].isOpen = true;
-            }
-
-            const current = board[row][col];
-            return !current.isBomb && current.count === 0;
-        }
-
-        function addToQueue([row, col]) {
-            visited[row][col] = true;
-            queue.push([row, col]);
-        }
     });
-
 }
 
 export function countNumCellsOpened(board: BoardData) {
