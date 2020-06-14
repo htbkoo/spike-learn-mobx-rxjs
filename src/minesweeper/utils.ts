@@ -1,20 +1,20 @@
 import {BoardDimension, CellCoordinates} from "./PlainReactHookMinesweeperApp";
 import {flatten, range, shuffle, take} from "lodash";
 
-type SimpleCoordinates = number[];
-type SimpleCoordinatesList = SimpleCoordinates[];
+export type SimpleCoordinates = [number, number,];
+export type SimpleCoordinatesList = SimpleCoordinates[];
 
 export function buildBombCandidatesList(
     {dimension: {width, height}, clicked: {row, col}}: { dimension: BoardDimension, clicked: CellCoordinates }
 ): SimpleCoordinatesList { // TODO: think clearly about return type
     // TODO: (minor for now) performance?
-    const allCombinations = flatten(
+    const allCombinations: SimpleCoordinates[] = flatten(
         range(height).map(i =>
             range(width).map(j =>
-                ([i, j])
+                [i, j]
             )
         )
-    );
+    ) as any;
     return allCombinations.filter(([i, j]) => (i !== row) || (j !== col));
 }
 
