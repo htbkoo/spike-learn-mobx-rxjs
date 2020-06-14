@@ -106,7 +106,7 @@ function getDimension(boardData: BoardData): BoardDimension {
     }
 }
 
-export function isPlaying(state: AppState): boolean {
+export function checkIsPlaying(state: AppState): boolean {
     return !!state.game && GameStatus.PLAYING === state.game.status;
 }
 

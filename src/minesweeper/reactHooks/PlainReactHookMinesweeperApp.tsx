@@ -3,7 +3,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {createStyles, Theme} from "@material-ui/core";
 import produce from "immer";
 
-import {createNewGameState, getNextGameState, isPlaying} from "../utils";
+import {createNewGameState, getNextGameState, checkIsPlaying} from "../utils";
 import {BoardData, BoardDimension, CellCoordinates} from "../types";
 import GameConfigDialog from "./GameConfigDialog";
 import BoardComponent from "./BoardComponent";
@@ -49,20 +49,22 @@ function PlainReactHookMinesweeperApp() {
 
     const [state, setState] = useState<AppState>({})
 
+    const isPlaying = checkIsPlaying(state);
     const gameBoardIfGameStarted = state.game
         ? (
             <BoardComponent
                 data={state.game.boardData}
-                isPlaying={isPlaying(state)}
+                isPlaying={isPlaying}
                 handleClick={handleClick}
             />
         )
         : ""
 
+    const shouldShowDialog = !state.game || !isPlaying;
     return (
         <div className={classes.gameAppContainer}>
             {gameBoardIfGameStarted}
-            <GameConfigDialog isOpen={!state.game} onStartGame={startGame} />
+            <GameConfigDialog isOpen={shouldShowDialog} onStartGame={startGame} />
         </div>
     );
 
