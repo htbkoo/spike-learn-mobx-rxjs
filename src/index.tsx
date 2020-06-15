@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {createMyMuiTheme} from "./muiThemeFactory";
+import {getBasename} from "./utils/routerUtils";
 
 import './index.css';
 
@@ -13,7 +14,7 @@ const myMuiTheme = createMyMuiTheme();
 
 ReactDOM.render((
     <ThemeProvider theme={myMuiTheme}>
-        <Router>
+        <Router basename={getBasename()}>
             <Switch>
                 <Route path="*">
                     <App />
