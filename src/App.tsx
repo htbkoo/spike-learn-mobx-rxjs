@@ -8,6 +8,7 @@ import ClippedResponsiveDrawer from "./ClippedResponsiveDrawer";
 import AppNavigationBar, {AppNavigationBarProps} from "./AppNavigationBar";
 import {ListItemLinkProps} from "./utils/StyledRouterLink";
 import {MinesweeperApp, MinesweeperAppMenu} from "./minesweeper/MinesweeperApp";
+import { getFirstPartPath } from "./utils/routerUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -88,10 +89,7 @@ function toRoute({appComponent, path, isPathExact}: AppConfiguration) {
 
 // TODO: extract to util.ts and add tests
 function getTitle(pathname: string): string {
-    const startIndex = pathname.indexOf("/");
-    const endIndex = pathname.indexOf("/", startIndex + 1);
-    const pathFirstPart = pathname.substring(startIndex, endIndex !== -1 ? endIndex : pathname.length);
-
+    const pathFirstPart = getFirstPartPath(pathname)
     const matchedConfig = APP_CONFIGURATIONS.find(({path}) => path === pathFirstPart);
 
     return matchedConfig?.title ?? "";
