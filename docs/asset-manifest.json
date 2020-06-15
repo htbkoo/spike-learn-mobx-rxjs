@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/spike-learn-mobx-rxjs/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/spike-learn-mobx-rxjs/static/js/main.30b4754b.chunk.js",
-    "main.js.map": "/spike-learn-mobx-rxjs/static/js/main.30b4754b.chunk.js.map",
+    "main.js": "/spike-learn-mobx-rxjs/static/js/main.d2a4a593.chunk.js",
+    "main.js.map": "/spike-learn-mobx-rxjs/static/js/main.d2a4a593.chunk.js.map",
     "runtime-main.js": "/spike-learn-mobx-rxjs/static/js/runtime-main.e6a41af9.js",
     "runtime-main.js.map": "/spike-learn-mobx-rxjs/static/js/runtime-main.e6a41af9.js.map",
     "static/js/2.85d8669a.chunk.js": "/spike-learn-mobx-rxjs/static/js/2.85d8669a.chunk.js",
     "static/js/2.85d8669a.chunk.js.map": "/spike-learn-mobx-rxjs/static/js/2.85d8669a.chunk.js.map",
     "index.html": "/spike-learn-mobx-rxjs/index.html",
-    "precache-manifest.f965344924fd973e78d9613b98d2cfe1.js": "/spike-learn-mobx-rxjs/precache-manifest.f965344924fd973e78d9613b98d2cfe1.js",
+    "precache-manifest.673f0dc36475933a90100a5221c39a8c.js": "/spike-learn-mobx-rxjs/precache-manifest.673f0dc36475933a90100a5221c39a8c.js",
     "service-worker.js": "/spike-learn-mobx-rxjs/service-worker.js",
     "static/css/main.5ecd60fb.chunk.css.map": "/spike-learn-mobx-rxjs/static/css/main.5ecd60fb.chunk.css.map",
     "static/js/2.85d8669a.chunk.js.LICENSE.txt": "/spike-learn-mobx-rxjs/static/js/2.85d8669a.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.e6a41af9.js",
     "static/js/2.85d8669a.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.30b4754b.chunk.js"
+    "static/js/main.d2a4a593.chunk.js"
   ]
 }

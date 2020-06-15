@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d6083ff9cb2a4f9d360a38613cd02ebd",
+    "revision": "ddb539ba9bd5fae0a5c71670956ca3ba",
     "url": "/spike-learn-mobx-rxjs/index.html"
   },
   {
-    "revision": "7e9f562143635033bf33",
+    "revision": "7ed90be1feaee39f01e7",
     "url": "/spike-learn-mobx-rxjs/static/css/main.5ecd60fb.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/spike-learn-mobx-rxjs/static/js/2.85d8669a.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "7e9f562143635033bf33",
-    "url": "/spike-learn-mobx-rxjs/static/js/main.30b4754b.chunk.js"
+    "revision": "7ed90be1feaee39f01e7",
+    "url": "/spike-learn-mobx-rxjs/static/js/main.d2a4a593.chunk.js"
   },
   {
     "revision": "d789ead241b970b6c5fc",
