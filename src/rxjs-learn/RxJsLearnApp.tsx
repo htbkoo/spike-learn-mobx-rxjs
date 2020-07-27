@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch, useRouteMatch, } from "react-router-dom";
+// import { SuperGif } from "libgif";
+// import * as  from "libgif";
+import SuperGif from "libgif";
 
 import LinksMenuList from "../utils/LinksMenuList";
 import useScript from "../utils/hooks";
 
-declare var SuperGif: any;
+// declare var SuperGif: any;
 
 const URL_PATHS = {
     RX_JS: "rxjs"
@@ -49,16 +52,32 @@ const IMG_ELEMENT_ID = "animated_img";
 
 function RxJsPlaygroundApp() {
     // TODO: refactor to serve locally
-    useScript("https://htbkoo.github.io/canvas-animation-spike/resources/js/libgif-js/libgif.js")
-    useScript("https://htbkoo.github.io/canvas-animation-spike/resources/js/libgif-js/rubbable.js")
+    // useScript("https://htbkoo.github.io/canvas-animation-spike/resources/js/libgif-js/libgif.js")
+    // useScript("https://htbkoo.github.io/canvas-animation-spike/resources/js/libgif-js/rubbable.js")
 
-    loadSuperGif(IMG_ELEMENT_ID);
+    useEffect(() => {
+        loadSuperGif(IMG_ELEMENT_ID);
+    }, [])
 
     return (
         <div>
             <div>
-                <img src="../assets/img/lihkg_dance2.gif" rel:animated_src="resources/img/lihkg_dance2.gif"
-                     width="250" height="276" rel:auto_play="0" rel:rubbable="0" id={IMG_ELEMENT_ID} alt="dance"/>
+                <img
+                    src="https://raw.githubusercontent.com/htbkoo/canvas-animation-spike/master/resources/img/lihkg_dance2.gif"
+                    width="250"
+                    height="276"
+                    id={IMG_ELEMENT_ID}
+                    alt="dance"
+
+                    {...{
+                        "rel:animated_src": "https://raw.githubusercontent.com/htbkoo/canvas-animation-spike/master/resources/img/lihkg_dance2.gif",
+                        "rel:auto_play": 0,
+                        "rel:rubbable": 0,
+                    }}
+                    // rel:animated_src="resources/img/lihkg_dance2.gif"
+                    // rel:auto_play="0"
+                    // rel:rubbable="0"
+                />
             </div>
             Try RxJS
         </div>
@@ -66,9 +85,19 @@ function RxJsPlaygroundApp() {
 
     function loadSuperGif(elementId) {
         var element = document.getElementById(elementId);
-        var sup1 = new SuperGif({ gif: element });
-        sup1.loadUrl();
-        addWheelListener()
+        console.log(element)
+        var sup1 = new SuperGif({
+            gif: element,
+            auto_play: 0,
+            progressbar_height: 0,
+        });
+        // TODO: refactor to serve locally
+
+        // element.getAttribute
+
+        // sup1.load();
+        // sup1.load_url("https://raw.githubusercontent.com/htbkoo/canvas-animation-spike/master/resources/img/lihkg_dance2.gif");
+        // addWheelListener()
 
         // sup1.load_url();
 
