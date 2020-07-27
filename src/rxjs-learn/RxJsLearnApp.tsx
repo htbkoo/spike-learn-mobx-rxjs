@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Switch, useRouteMatch,} from "react-router-dom";
+import { Route, Switch, useRouteMatch, } from "react-router-dom";
 
 import LinksMenuList from "../utils/LinksMenuList";
 
@@ -14,7 +14,7 @@ function RxJsLearnAppMenu() {
         <nav>
             <LinksMenuList
                 items={[
-                    {to: `${match.url}/${URL_PATHS.RX_JS}`, primary: "With RxJS"}
+                    { to: `${match.url}/${URL_PATHS.RX_JS}`, primary: "With RxJS" }
                 ]}
             />
         </nav>
@@ -32,17 +32,17 @@ function RxJsLearnApp() {
                     <h3>Please select an implementation.</h3>
                 </Route>
                 <Route path={`${match.path}/${URL_PATHS.RX_JS}`}>
-                    <RxJsPlaygroundApp />
+                    <RxJsPlaygroundApp/>
                 </Route>
                 <Route path="*">
-                    <div />
+                    <div/>
                 </Route>
             </Switch>
         </div>
     );
 }
 
-function RxJsPlaygroundApp(){
+function RxJsPlaygroundApp() {
     return (
         <div>
             Try RxJS
