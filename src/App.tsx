@@ -9,6 +9,7 @@ import AppNavigationBar, {AppNavigationBarProps} from "./AppNavigationBar";
 import {ListItemLinkProps} from "./utils/StyledRouterLink";
 import {MinesweeperApp, MinesweeperAppMenu} from "./minesweeper/MinesweeperApp";
 import { getFirstPartPath } from "./utils/routerUtils";
+import { RxJsLearnApp, RxJsLearnAppMenu } from "./rxjs-learn/RxJsLearnApp";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -45,6 +46,13 @@ const APP_CONFIGURATIONS: AppConfiguration[] = [
         linkText: "MinesweeperApp",
         appComponent: (<MinesweeperApp />),
         subSectionMenu: (<MinesweeperAppMenu />),
+        title: "MINESWEEPER APP"
+    },
+    {
+        path: "/rxjs-learn",
+        linkText: "Playground to learn RxJS",
+        appComponent: (<RxJsLearnApp />),
+        subSectionMenu: (<RxJsLearnAppMenu />),
         title: "MINESWEEPER APP"
     },
 ]
