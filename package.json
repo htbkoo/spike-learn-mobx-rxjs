@@ -12,6 +12,7 @@
     "@types/react": "16.8.18",
     "@types/react-dom": "16.8.4",
     "immer": "^6.0.3",
+    "libgif": "0.0.3",
     "lodash": "^4.17.19",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
